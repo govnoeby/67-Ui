@@ -31,6 +31,5 @@ For full documentation, please visit the [project Wiki](https://github.com/govno
 - [Iran v2ray rules](https://github.com/chocolate4u/Iran-v2ray-rules) (License: **GPL-3.0**): _Enhanced v2ray/xray and v2ray/xray-clients routing rules with built-in Iranian domains and a focus on security and adblocking._
 - [Russia v2ray rules](https://github.com/runetfreedom/russia-v2ray-rules-dat) (License: **GPL-3.0**): _This repository contains automatically updated V2Ray routing rules based on data on blocked domains and addresses in Russia._
 
-## Stargazers over Time
-
-[![Stargazers over time](https://starchart.cc/govnoeby/3x-ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/3x-ui)
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/govnoeby/3x-ui.svg?variant=dark)](https://starchart.cc/govnoeby/3x-ui)
