@@ -1,4 +1,4 @@
-[English](/README.md) | [فارسی](/README.fa_IR.md) | [العربية](/README.ar_EG.md) | [中文](/README.zh_CN.md) | [Español](/README.es_ES.md) | [Русский](/README.ru_RU.md)
+[English](/README.md) | [Русский](/README.ru_RU.md)
 
 <p align="center">
   <picture>
@@ -26,27 +26,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/3x-ui/master/install.
 
 Полную документацию смотрите в [вики проекта](https://github.com/govnoeby/3x-ui/wiki).
 
-## Особая благодарность
-
-- [alireza0](https://github.com/alireza0/)
-
 ## Благодарности
 
 - [Iran v2ray rules](https://github.com/chocolate4u/Iran-v2ray-rules) (Лицензия: **GPL-3.0**): _Улучшенные правила маршрутизации для v2ray/xray и v2ray/xray-clients со встроенными иранскими доменами и фокусом на безопасность и блокировку рекламы._
 - [Russia v2ray rules](https://github.com/runetfreedom/russia-v2ray-rules-dat) (Лицензия: **GPL-3.0**): _Этот репозиторий содержит автоматически обновляемые правила маршрутизации V2Ray на основе данных о заблокированных доменах и адресах в России._
-
-## Поддержка проекта
-
-**Если этот проект полезен для вас, вы можете поставить ему**:star2:
-
-<a href="https://www.buymeacoffee.com/govnoeby" target="_blank">
-<img src="./media/default-yellow.png" alt="Buy Me A Coffee" style="height: 70px !important;width: 277px !important;" >
-</a>
-
-</br>
-<a href="https://nowpayments.io/donation/hsanaei" target="_blank" rel="noreferrer noopener">
-   <img src="./media/donation-button-black.svg" alt="Crypto donation button by NOWPayments">
-</a>
 
 ## Звезды с течением времени
 
