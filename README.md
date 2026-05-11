@@ -26,10 +26,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/3x-ui/master/install.
 
 For full documentation, please visit the [project Wiki](https://github.com/MHSanaei/3x-ui/wiki).
 
-## A Special Thanks to
-
-- [alireza0](https://github.com/alireza0/)
-
 ## Acknowledgment
 
 - [Iran v2ray rules](https://github.com/chocolate4u/Iran-v2ray-rules) (License: **GPL-3.0**): _Enhanced v2ray/xray and v2ray/xray-clients routing rules with built-in Iranian domains and a focus on security and adblocking._
@@ -50,4 +46,4 @@ For full documentation, please visit the [project Wiki](https://github.com/MHSan
 
 ## Stargazers over Time
 
-[![Stargazers over time](https://starchart.cc/MHSanaei/3x-ui.svg?variant=adaptive)](https://starchart.cc/MHSanaei/3x-ui)
+[![Stargazers over time](https://starchart.cc/govnoeby/3x-ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/3x-ui)
