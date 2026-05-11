@@ -38,7 +38,8 @@ async function confirmExport() {
       { password: password.value },
       {
         responseType: 'blob',
-        headers: { 'X-XSRF-TOKEN': window.XSRF_TOKEN || '' },
+        headers: { 'Content-Type': 'application/json' },
+        transformRequest: [],
       }
     );
 
