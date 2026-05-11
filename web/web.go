@@ -15,23 +15,29 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mhsanaei/3x-ui/v3/config"
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/util/common"
-	"github.com/mhsanaei/3x-ui/v3/web/controller"
-	"github.com/mhsanaei/3x-ui/v3/web/job"
-	"github.com/mhsanaei/3x-ui/v3/web/locale"
-	"github.com/mhsanaei/3x-ui/v3/web/middleware"
-	"github.com/mhsanaei/3x-ui/v3/web/network"
-	"github.com/mhsanaei/3x-ui/v3/web/runtime"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
-	"github.com/mhsanaei/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/3x-ui/v3/config"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/3x-ui/v3/web/controller"
+	"github.com/govnoeby/3x-ui/v3/web/job"
+	"github.com/govnoeby/3x-ui/v3/web/locale"
+	"github.com/govnoeby/3x-ui/v3/web/middleware"
+	"github.com/govnoeby/3x-ui/v3/web/network"
+	"github.com/govnoeby/3x-ui/v3/web/runtime"
+	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/web/websocket"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron/v3"
+
+	// Swagger UI
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/govnoeby/3x-ui/v3/docs/swagger"
 )
 
 //go:embed translation/*
@@ -229,6 +235,9 @@ func (s *Server) initRouter() (*gin.Engine, error) {
 	controller.SetDistFS(distFS)
 
 	g := engine.Group(basePath)
+
+	// Swagger UI — serves auto-generated OpenAPI documentation
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	s.index = controller.NewIndexController(g)
 	s.panel = controller.NewXUIController(g)

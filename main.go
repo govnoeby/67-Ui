@@ -1,5 +1,24 @@
 // Package main is the entry point for the 3x-ui web panel application.
 // It initializes the database, web server, and handles command-line operations for managing the panel.
+
+// @title          3X-UI Panel API
+// @version        3.0.1
+// @description    Advanced web panel for managing Xray-core servers. Supports VMESS, VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.
+// @termsOfService https://github.com/MHSanaei/3x-ui
+
+// @contact.name   MHSanaei
+// @contact.url    https://github.com/MHSanaei/3x-ui
+
+// @license.name  GNU GPL v3
+// @license.url   https://www.gnu.org/licenses/gpl-3.0.html
+
+// @host       localhost:2053
+// @BasePath   /
+
+// @securityDefinitions.apikey  BearerAuth
+// @in                          header
+// @name                        Authorization
+// @description                 Bearer token authentication. Use format: "Bearer <token>". Get your token from Settings → Security → API Token.
 package main
 
 import (
@@ -11,15 +30,15 @@ import (
 	"syscall"
 	_ "unsafe"
 
-	"github.com/mhsanaei/3x-ui/v3/config"
-	"github.com/mhsanaei/3x-ui/v3/database"
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/sub"
-	"github.com/mhsanaei/3x-ui/v3/util/crypto"
-	"github.com/mhsanaei/3x-ui/v3/util/sys"
-	"github.com/mhsanaei/3x-ui/v3/web"
-	"github.com/mhsanaei/3x-ui/v3/web/global"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/config"
+	"github.com/govnoeby/3x-ui/v3/database"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/sub"
+	"github.com/govnoeby/3x-ui/v3/util/crypto"
+	"github.com/govnoeby/3x-ui/v3/util/sys"
+	"github.com/govnoeby/3x-ui/v3/web"
+	"github.com/govnoeby/3x-ui/v3/web/global"
+	"github.com/govnoeby/3x-ui/v3/web/service"
 
 	"github.com/joho/godotenv"
 	"github.com/op/go-logging"

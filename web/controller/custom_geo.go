@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/mhsanaei/3x-ui/v3/database/model"
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/web/entity"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/database/model"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/web/entity"
+	"github.com/govnoeby/3x-ui/v3/web/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -73,6 +73,13 @@ func mapCustomGeoErr(c *gin.Context, err error) error {
 	}
 }
 
+// @Summary      List custom geo sources
+// @Description  Returns all configured custom geo sources with type, alias, URL, status, and download timestamps.
+// @Tags         Custom Geo
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/list [get]
 func (a *CustomGeoController) list(c *gin.Context) {
 	list, err := a.customGeoService.GetAll()
 	if err != nil {
@@ -82,6 +89,13 @@ func (a *CustomGeoController) list(c *gin.Context) {
 	jsonObj(c, list, nil)
 }
 
+// @Summary      List geo aliases
+// @Description  Returns geo aliases usable in routing rules — both built-in defaults and user-configured ones.
+// @Tags         Custom Geo
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/aliases [get]
 func (a *CustomGeoController) aliases(c *gin.Context) {
 	out, err := a.customGeoService.GetAliasesForUI()
 	if err != nil {
@@ -97,6 +111,15 @@ type customGeoForm struct {
 	Url   string `json:"url" form:"url"`
 }
 
+// @Summary      Add custom geo source
+// @Description  Registers a custom geo source. Alias is auto-normalised; URL must point to a .dat or .json file.
+// @Tags         Custom Geo
+// @Accept       json
+// @Produce      json
+// @Param        body body customGeoForm true "Custom geo source details"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/add [post]
 func (a *CustomGeoController) add(c *gin.Context) {
 	var form customGeoForm
 	if err := c.ShouldBind(&form); err != nil {
@@ -125,6 +148,16 @@ func parseCustomGeoID(c *gin.Context, idStr string) (int, bool) {
 	return id, true
 }
 
+// @Summary      Update custom geo source
+// @Description  Replaces a custom geo source configuration. Body shape matches /add.
+// @Tags         Custom Geo
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Custom geo source ID"
+// @Param        body body customGeoForm true "Updated source details"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/update/{id} [post]
 func (a *CustomGeoController) update(c *gin.Context) {
 	id, ok := parseCustomGeoID(c, c.Param("id"))
 	if !ok {
@@ -144,6 +177,14 @@ func (a *CustomGeoController) update(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.index.customGeoToastUpdate"), mapCustomGeoErr(c, err))
 }
 
+// @Summary      Delete custom geo source
+// @Description  Removes a custom geo source and its cached file from disk.
+// @Tags         Custom Geo
+// @Produce      json
+// @Param        id path int true "Custom geo source ID"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/delete/{id} [post]
 func (a *CustomGeoController) delete(c *gin.Context) {
 	id, ok := parseCustomGeoID(c, c.Param("id"))
 	if !ok {
@@ -153,6 +194,14 @@ func (a *CustomGeoController) delete(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.index.customGeoToastDelete", "fileName=="+name), mapCustomGeoErr(c, err))
 }
 
+// @Summary      Download custom geo file
+// @Description  Triggers a re-download of a custom geo source from its URL.
+// @Tags         Custom Geo
+// @Produce      json
+// @Param        id path int true "Custom geo source ID"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/download/{id} [post]
 func (a *CustomGeoController) download(c *gin.Context) {
 	id, ok := parseCustomGeoID(c, c.Param("id"))
 	if !ok {
@@ -162,6 +211,13 @@ func (a *CustomGeoController) download(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.index.customGeoToastDownload", "fileName=="+name), mapCustomGeoErr(c, err))
 }
 
+// @Summary      Update all custom geo sources
+// @Description  Re-downloads every configured custom geo source. Errors are reported per-source in the response.
+// @Tags         Custom Geo
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/custom-geo/update-all [post]
 func (a *CustomGeoController) updateAll(c *gin.Context) {
 	res, err := a.customGeoService.TriggerUpdateAll()
 	if err != nil {

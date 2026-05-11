@@ -12,12 +12,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mhsanaei/3x-ui/v3/database"
-	"github.com/mhsanaei/3x-ui/v3/database/model"
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/util/common"
-	"github.com/mhsanaei/3x-ui/v3/web/runtime"
-	"github.com/mhsanaei/3x-ui/v3/xray"
+	"github.com/govnoeby/3x-ui/v3/database"
+	"github.com/govnoeby/3x-ui/v3/database/model"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/3x-ui/v3/web/runtime"
+	"github.com/govnoeby/3x-ui/v3/xray"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

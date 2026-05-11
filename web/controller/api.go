@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/mhsanaei/3x-ui/v3/web/middleware"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
-	"github.com/mhsanaei/3x-ui/v3/web/session"
+	"github.com/govnoeby/3x-ui/v3/web/middleware"
+	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )
@@ -88,7 +88,13 @@ func (a *APIController) initRouter(g *gin.RouterGroup, customGeo *service.Custom
 	api.GET("/backuptotgbot", a.BackuptoTgbot)
 }
 
-// BackuptoTgbot sends a backup of the panel data to Telegram bot admins.
+// @Summary      Backup to Telegram
+// @Description  Sends a fresh database backup to every Telegram chat configured as an admin recipient.
+// @Tags         Backup
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/backuptotgbot [get]
 func (a *APIController) BackuptoTgbot(c *gin.Context) {
 	a.Tgbot.SendBackupToAdmins()
 }

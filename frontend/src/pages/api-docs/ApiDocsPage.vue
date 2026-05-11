@@ -8,6 +8,7 @@ import {
   CopyOutlined,
   EyeOutlined,
   EyeInvisibleOutlined,
+  ApiOutlined,
 } from '@ant-design/icons-vue';
 
 import { theme as themeState, antdThemeConfig } from '@/composables/useTheme.js';
@@ -87,7 +88,15 @@ onMounted(() => {
         <a-layout-content class="content-area">
           <div class="docs-wrapper">
             <header class="docs-header">
-              <h1 class="docs-title">API Documentation</h1>
+              <div class="docs-title-row">
+                <h1 class="docs-title">API Documentation</h1>
+                <a :href="`${basePath}swagger/index.html`" target="_blank">
+                  <a-button type="primary" size="small">
+                    <template #icon><ApiOutlined /></template>
+                    Interactive Docs (Swagger)
+                  </a-button>
+                </a>
+              </div>
               <p class="docs-lead">
                 The 3x-ui panel exposes a REST API under <code>/panel/api/</code>. Authenticate with the panel session
                 cookie, or with the <code>Authorization: Bearer &lt;token&gt;</code> header below. Every endpoint
@@ -197,10 +206,19 @@ onMounted(() => {
   margin-bottom: 18px;
 }
 
+.docs-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
 .docs-title {
   font-size: 26px;
   font-weight: 700;
-  margin: 0 0 8px;
+  margin: 0;
   color: rgba(0, 0, 0, 0.88);
 }
 

@@ -3,8 +3,8 @@ package controller
 import (
 	"encoding/json"
 
-	"github.com/mhsanaei/3x-ui/v3/util/common"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/3x-ui/v3/web/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,7 +42,13 @@ func (a *XraySettingController) initRouter(g *gin.RouterGroup) {
 	g.POST("/testOutbound", a.testOutbound)
 }
 
-// getXraySetting retrieves the Xray configuration template, inbound tags, and outbound test URL.
+// @Summary      Get Xray settings
+// @Description  Returns the Xray configuration template, inbound tags, and outbound test URL.
+// @Tags         Xray Settings
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/ [post]
 func (a *XraySettingController) getXraySetting(c *gin.Context) {
 	xraySetting, err := a.SettingService.GetXrayConfigTemplate()
 	if err != nil {
@@ -93,7 +99,16 @@ func (a *XraySettingController) getXraySetting(c *gin.Context) {
 	jsonObj(c, string(result), nil)
 }
 
-// updateSetting updates the Xray configuration settings.
+// @Summary      Update Xray settings
+// @Description  Updates the Xray configuration and outbound test URL.
+// @Tags         Xray Settings
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        xraySetting formData string true "Xray configuration JSON"
+// @Param        outboundTestUrl formData string false "Outbound test URL"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/update [post]
 func (a *XraySettingController) updateSetting(c *gin.Context) {
 	xraySetting := c.PostForm("xraySetting")
 	if err := a.XraySettingService.SaveXraySetting(xraySetting); err != nil {
@@ -111,7 +126,13 @@ func (a *XraySettingController) updateSetting(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.settings.toasts.modifySettings"), nil)
 }
 
-// getDefaultXrayConfig retrieves the default Xray configuration.
+// @Summary      Get default Xray config
+// @Description  Returns the default Xray configuration template.
+// @Tags         Xray Settings
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/getDefaultJsonConfig [get]
 func (a *XraySettingController) getDefaultXrayConfig(c *gin.Context) {
 	defaultJsonConfig, err := a.SettingService.GetDefaultXrayConfig()
 	if err != nil {
@@ -121,12 +142,29 @@ func (a *XraySettingController) getDefaultXrayConfig(c *gin.Context) {
 	jsonObj(c, defaultJsonConfig, nil)
 }
 
-// getXrayResult retrieves the current Xray service result.
+// @Summary      Get Xray result
+// @Description  Returns the current Xray process output/status.
+// @Tags         Xray Settings
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/getXrayResult [get]
 func (a *XraySettingController) getXrayResult(c *gin.Context) {
 	jsonObj(c, a.XrayService.GetXrayResult(), nil)
 }
 
-// warp handles Warp-related operations based on the action parameter.
+// @Summary      Warp operations
+// @Description  Manages Warp integration: get data, delete, get config, register, set license.
+// @Tags         Xray Settings
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        action path string true "Action (data, del, config, reg, license)"
+// @Param        privateKey formData string false "Private key for registration"
+// @Param        publicKey formData string false "Public key for registration"
+// @Param        license formData string false "License key"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/warp/{action} [post]
 func (a *XraySettingController) warp(c *gin.Context) {
 	action := c.Param("action")
 	var resp string
@@ -150,7 +188,18 @@ func (a *XraySettingController) warp(c *gin.Context) {
 	jsonObj(c, resp, err)
 }
 
-// nord handles NordVPN-related operations based on the action parameter.
+// @Summary      NordVPN operations
+// @Description  Manages NordVPN integration: list countries, servers, register, set key, get data, delete.
+// @Tags         Xray Settings
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        action path string true "Action (countries, servers, reg, setKey, data, del)"
+// @Param        countryId formData string false "Country ID for server list"
+// @Param        token formData string false "NordVPN API token for registration"
+// @Param        key formData string false "Access key"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/nord/{action} [post]
 func (a *XraySettingController) nord(c *gin.Context) {
 	action := c.Param("action")
 	var resp string
@@ -176,7 +225,13 @@ func (a *XraySettingController) nord(c *gin.Context) {
 	jsonObj(c, resp, err)
 }
 
-// getOutboundsTraffic retrieves the traffic statistics for outbounds.
+// @Summary      Get outbounds traffic
+// @Description  Returns traffic statistics for all Xray outbounds.
+// @Tags         Xray Settings
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/getOutboundsTraffic [get]
 func (a *XraySettingController) getOutboundsTraffic(c *gin.Context) {
 	outboundsTraffic, err := a.OutboundService.GetOutboundsTraffic()
 	if err != nil {
@@ -186,7 +241,15 @@ func (a *XraySettingController) getOutboundsTraffic(c *gin.Context) {
 	jsonObj(c, outboundsTraffic, nil)
 }
 
-// resetOutboundsTraffic resets the traffic statistics for the specified outbound tag.
+// @Summary      Reset outbound traffic
+// @Description  Resets traffic statistics for a specified outbound by tag.
+// @Tags         Xray Settings
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        tag formData string true "Outbound tag to reset"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/resetOutboundsTraffic [post]
 func (a *XraySettingController) resetOutboundsTraffic(c *gin.Context) {
 	tag := c.PostForm("tag")
 	err := a.OutboundService.ResetOutboundTraffic(tag)
@@ -197,10 +260,17 @@ func (a *XraySettingController) resetOutboundsTraffic(c *gin.Context) {
 	jsonObj(c, "", nil)
 }
 
-// testOutbound tests an outbound configuration and returns the delay/response time.
-// Optional form "allOutbounds": JSON array of all outbounds; used to resolve sockopt.dialerProxy dependencies.
-// Optional form "mode": "tcp" for a fast dial-only probe (parallel-safe),
-// anything else (default) for a full HTTP probe through a temp xray instance.
+// @Summary      Test outbound
+// @Description  Tests an outbound configuration and returns the delay/response time. Supports TCP probe mode for parallel-safe testing.
+// @Tags         Xray Settings
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        outbound formData string true "Outbound configuration JSON"
+// @Param        allOutbounds formData string false "JSON array of all outbounds (for dependency resolution)"
+// @Param        mode formData string false "Test mode: 'tcp' for fast dial-only probe"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/xray/testOutbound [post]
 func (a *XraySettingController) testOutbound(c *gin.Context) {
 	outboundJSON := c.PostForm("outbound")
 	allOutboundsJSON := c.PostForm("allOutbounds")

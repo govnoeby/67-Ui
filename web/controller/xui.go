@@ -3,9 +3,9 @@ package controller
 import (
 	"net/http"
 
-	"github.com/mhsanaei/3x-ui/v3/web/entity"
-	"github.com/mhsanaei/3x-ui/v3/web/middleware"
-	"github.com/mhsanaei/3x-ui/v3/web/session"
+	"github.com/govnoeby/3x-ui/v3/web/entity"
+	"github.com/govnoeby/3x-ui/v3/web/middleware"
+	"github.com/govnoeby/3x-ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )
@@ -82,9 +82,13 @@ func (a *XUIController) apiDocs(c *gin.Context) {
 	serveDistPage(c, "api-docs.html")
 }
 
-// csrfToken returns the session CSRF token to authenticated SPA clients.
-// The endpoint is GET (a safe method) so it bypasses CSRFMiddleware itself,
-// but checkLogin still gates the response — anonymous callers get 401/redirect.
+// @Summary      Get CSRF token (authenticated)
+// @Description  Returns a CSRF token for authenticated SPA clients. Requires login session.
+// @Tags         Authentication
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/csrf-token [get]
 func (a *XUIController) csrfToken(c *gin.Context) {
 	token, err := session.EnsureCSRFToken(c)
 	if err != nil {

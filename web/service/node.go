@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mhsanaei/3x-ui/v3/database"
-	"github.com/mhsanaei/3x-ui/v3/database/model"
-	"github.com/mhsanaei/3x-ui/v3/util/common"
-	"github.com/mhsanaei/3x-ui/v3/web/runtime"
+	"github.com/govnoeby/3x-ui/v3/database"
+	"github.com/govnoeby/3x-ui/v3/database/model"
+	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/3x-ui/v3/web/runtime"
 )
 
 type HeartbeatPatch struct {
