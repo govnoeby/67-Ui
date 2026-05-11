@@ -1,4 +1,4 @@
-module github.com/mhsanaei/3x-ui/v3
+module github.com/govnoeby/3x-ui/v3
 
 go 1.26.3
 

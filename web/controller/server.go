@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/util/crypto"
-	"github.com/mhsanaei/3x-ui/v3/web/entity"
-	"github.com/mhsanaei/3x-ui/v3/web/global"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
-	"github.com/mhsanaei/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/util/crypto"
+	"github.com/govnoeby/3x-ui/v3/web/entity"
+	"github.com/govnoeby/3x-ui/v3/web/global"
+	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/web/websocket"
 
 	"github.com/gin-gonic/gin"
 )

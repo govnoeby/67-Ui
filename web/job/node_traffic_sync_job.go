@@ -5,11 +5,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mhsanaei/3x-ui/v3/database/model"
-	"github.com/mhsanaei/3x-ui/v3/logger"
-	"github.com/mhsanaei/3x-ui/v3/web/runtime"
-	"github.com/mhsanaei/3x-ui/v3/web/service"
-	"github.com/mhsanaei/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/3x-ui/v3/database/model"
+	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/3x-ui/v3/web/runtime"
+	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/3x-ui/v3/web/websocket"
 )
 
 const (
