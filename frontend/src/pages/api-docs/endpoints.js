@@ -298,9 +298,10 @@ export const sections = [
         summary: 'Return the assembled Xray config that’s currently running on this host.',
       },
       {
-        method: 'GET',
+        method: 'POST',
         path: '/panel/api/server/getDb',
-        summary: 'Stream the SQLite database file as an attachment. Use as a manual backup.',
+        summary: 'Export the SQLite database file as an attachment (password-protected).',
+        body: { password: 'your-password' },
       },
       {
         method: 'GET',

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/mhsanaei/3x-ui/v3/logger"
+	"github.com/mhsanaei/3x-ui/v3/util/crypto"
 	"github.com/mhsanaei/3x-ui/v3/web/entity"
 	"github.com/mhsanaei/3x-ui/v3/web/global"
 	"github.com/mhsanaei/3x-ui/v3/web/service"
@@ -26,6 +27,7 @@ type ServerController struct {
 	serverService  service.ServerService
 	settingService service.SettingService
 	panelService   service.PanelService
+	userService    service.UserService
 
 	lastStatus *service.Status
 
@@ -34,8 +36,10 @@ type ServerController struct {
 }
 
 // NewServerController creates a new ServerController, initializes routes, and starts background tasks.
-func NewServerController(g *gin.RouterGroup) *ServerController {
-	a := &ServerController{}
+func NewServerController(g *gin.RouterGroup, userService service.UserService) *ServerController {
+	a := &ServerController{
+		userService: userService,
+	}
 	a.initRouter(g)
 	a.startTask()
 	return a
@@ -50,7 +54,7 @@ func (a *ServerController) initRouter(g *gin.RouterGroup) {
 	g.GET("/getXrayVersion", a.getXrayVersion)
 	g.GET("/getPanelUpdateInfo", a.getPanelUpdateInfo)
 	g.GET("/getConfigJson", a.getConfigJson)
-	g.GET("/getDb", a.getDb)
+	g.POST("/getDb", a.getDb)
 	g.GET("/getNewUUID", a.getNewUUID)
 	g.GET("/getNewX25519Cert", a.getNewX25519Cert)
 	g.GET("/getNewmldsa65", a.getNewmldsa65)
@@ -306,13 +310,39 @@ func (a *ServerController) getConfigJson(c *gin.Context) {
 	jsonObj(c, configJson, nil)
 }
 
-// getDb downloads the database file.
+// getDbPasswordRequest represents the expected JSON body for database export.
+type getDbPasswordRequest struct {
+	Password string `json:"password"`
+}
+
+// getDb exports the database file after confirming the user's password.
 func (a *ServerController) getDb(c *gin.Context) {
+	var req getDbPasswordRequest
+	if err := c.ShouldBindJSON(&req); err != nil || req.Password == "" {
+		pureJsonMsg(c, http.StatusOK, false, "Password is required")
+		return
+	}
+
+	user, err := a.userService.GetFirstUser()
+	if err != nil {
+		pureJsonMsg(c, http.StatusOK, false, "An error occurred while retrieving the database.")
+		logger.Errorf("getDb: failed to lookup user: %v", err)
+		return
+	}
+
+	if !crypto.CheckPasswordHash(user.Password, req.Password) {
+		logger.Warningf("getDb: wrong password attempt from %s", getRemoteIp(c))
+		pureJsonMsg(c, http.StatusOK, false, "Invalid password")
+		return
+	}
+
 	db, err := a.serverService.GetDb()
 	if err != nil {
 		jsonMsg(c, I18nWeb(c, "pages.index.getDatabaseError"), err)
 		return
 	}
+
+	logger.Infof("getDb: database exported by %s from %s", user.Username, getRemoteIp(c))
 
 	filename := "x-ui.db"
 
