@@ -31,11 +31,6 @@ For full documentation, please visit the [project Wiki](https://github.com/MHSan
 - [Iran v2ray rules](https://github.com/chocolate4u/Iran-v2ray-rules) (License: **GPL-3.0**): _Enhanced v2ray/xray and v2ray/xray-clients routing rules with built-in Iranian domains and a focus on security and adblocking._
 - [Russia v2ray rules](https://github.com/runetfreedom/russia-v2ray-rules-dat) (License: **GPL-3.0**): _This repository contains automatically updated V2Ray routing rules based on data on blocked domains and addresses in Russia._
 
-</br>
-<a href="https://nowpayments.io/donation/hsanaei" target="_blank" rel="noreferrer noopener">
-   <img src="./media/donation-button-black.svg" alt="Crypto donation button by NOWPayments">
-</a>
-
 ## Stargazers over Time
 
 [![Stargazers over time](https://starchart.cc/govnoeby/3x-ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/3x-ui)
