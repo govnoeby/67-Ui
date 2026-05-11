@@ -165,13 +165,13 @@ async function openConfig() {
                     </a-tooltip>
                   </template>
                   <div class="link-tags">
-                    <a href="https://github.com/MHSanaei/3x-ui/releases" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/govnoeby/3x-ui/releases" target="_blank" rel="noopener noreferrer">
                       <a-tag color="green">v{{ displayVersion }}</a-tag>
                     </a>
                     <a href="https://t.me/XrayUI" target="_blank" rel="noopener noreferrer">
                       <a-tag color="green">@XrayUI</a-tag>
                     </a>
-                    <a href="https://github.com/MHSanaei/3x-ui/wiki" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/govnoeby/3x-ui/wiki" target="_blank" rel="noopener noreferrer">
                       <a-tag color="purple">{{ t('pages.index.documentation') }}</a-tag>
                     </a>
                   </div>

@@ -9,10 +9,10 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://github.com/MHSanaei/3x-ui",
+        "termsOfService": "https://github.com/govnoeby/3x-ui",
         "contact": {
-            "name": "MHSanaei",
-            "url": "https://github.com/MHSanaei/3x-ui"
+"name": "govnoeby",
+				"url": "https://github.com/govnoeby/3x-ui"
         },
         "license": {
             "name": "GNU GPL v3",

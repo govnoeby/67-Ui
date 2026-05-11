@@ -3,10 +3,10 @@
     "info": {
         "description": "Advanced web panel for managing Xray-core servers. Supports VMESS, VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.",
         "title": "3X-UI Panel API",
-        "termsOfService": "https://github.com/MHSanaei/3x-ui",
+        "termsOfService": "https://github.com/govnoeby/3x-ui",
         "contact": {
-            "name": "MHSanaei",
-            "url": "https://github.com/MHSanaei/3x-ui"
+"name": "govnoeby",
+    "url": "https://github.com/govnoeby/3x-ui"
         },
         "license": {
             "name": "GNU GPL v3",
