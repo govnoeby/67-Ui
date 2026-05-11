@@ -88,7 +88,13 @@ func (a *APIController) initRouter(g *gin.RouterGroup, customGeo *service.Custom
 	api.GET("/backuptotgbot", a.BackuptoTgbot)
 }
 
-// BackuptoTgbot sends a backup of the panel data to Telegram bot admins.
+// @Summary      Backup to Telegram
+// @Description  Sends a fresh database backup to every Telegram chat configured as an admin recipient.
+// @Tags         Backup
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/backuptotgbot [get]
 func (a *APIController) BackuptoTgbot(c *gin.Context) {
 	a.Tgbot.SendBackupToAdmins()
 }

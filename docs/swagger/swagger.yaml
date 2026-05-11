@@ -1,0 +1,2324 @@
+basePath: /
+definitions:
+  controller.CopyInboundClientsRequest:
+    properties:
+      clientEmails:
+        items:
+          type: string
+        type: array
+      flow:
+        type: string
+      sourceInboundId:
+        type: integer
+    type: object
+  controller.LoginForm:
+    description: Login form with username, password and optional 2FA code.
+    properties:
+      password:
+        type: string
+      twoFactorCode:
+        type: string
+      username:
+        type: string
+    type: object
+  controller.customGeoForm:
+    properties:
+      alias:
+        type: string
+      type:
+        type: string
+      url:
+        type: string
+    type: object
+  controller.getDbPasswordRequest:
+    properties:
+      password:
+        type: string
+    type: object
+  controller.updateUserForm:
+    properties:
+      newPassword:
+        type: string
+      newUsername:
+        type: string
+      oldPassword:
+        type: string
+      oldUsername:
+        type: string
+    type: object
+  entity.AllSetting:
+    properties:
+      datepicker:
+        description: Date picker format
+        type: string
+      expireDiff:
+        description: Expiration warning threshold in days
+        type: integer
+      externalTrafficInformEnable:
+        description: Enable external traffic reporting
+        type: boolean
+      externalTrafficInformURI:
+        description: URI for external traffic reporting
+        type: string
+      ldapAutoCreate:
+        type: boolean
+      ldapAutoDelete:
+        type: boolean
+      ldapBaseDN:
+        type: string
+      ldapBindDN:
+        type: string
+      ldapDefaultExpiryDays:
+        type: integer
+      ldapDefaultLimitIP:
+        type: integer
+      ldapDefaultTotalGB:
+        type: integer
+      ldapEnable:
+        description: LDAP settings
+        type: boolean
+      ldapFlagField:
+        description: Generic flag configuration
+        type: string
+      ldapHost:
+        type: string
+      ldapInboundTags:
+        type: string
+      ldapInvertFlag:
+        type: boolean
+      ldapPassword:
+        type: string
+      ldapPort:
+        type: integer
+      ldapSyncCron:
+        type: string
+      ldapTruthyValues:
+        type: string
+      ldapUseTLS:
+        type: boolean
+      ldapUserAttr:
+        description: e.g., mail or uid
+        type: string
+      ldapUserFilter:
+        type: string
+      ldapVlessField:
+        type: string
+      pageSize:
+        description: UI settings
+        type: integer
+      remarkModel:
+        description: Remark model pattern for inbounds
+        type: string
+      restartXrayOnClientDisable:
+        description: Restart Xray when clients are auto-disabled by expiry/traffic
+          limit
+        type: boolean
+      sessionMaxAge:
+        description: Session maximum age in minutes
+        type: integer
+      subAnnounce:
+        description: Subscription announce
+        type: string
+      subCertFile:
+        description: SSL certificate file for subscription server
+        type: string
+      subClashEnable:
+        description: Enable Clash/Mihomo subscription endpoint
+        type: boolean
+      subClashPath:
+        description: Path for Clash/Mihomo subscription endpoint
+        type: string
+      subClashURI:
+        description: Clash/Mihomo subscription server URI
+        type: string
+      subDomain:
+        description: Domain for subscription server validation
+        type: string
+      subEnable:
+        description: Subscription server settings
+        type: boolean
+      subEnableRouting:
+        description: Enable routing for subscription
+        type: boolean
+      subEncrypt:
+        description: Encrypt subscription responses
+        type: boolean
+      subJsonEnable:
+        description: Enable JSON subscription endpoint
+        type: boolean
+      subJsonFragment:
+        description: JSON subscription fragment configuration
+        type: string
+      subJsonMux:
+        description: JSON subscription mux configuration
+        type: string
+      subJsonNoises:
+        description: JSON subscription noise configuration
+        type: string
+      subJsonPath:
+        description: Path for JSON subscription endpoint
+        type: string
+      subJsonRules:
+        type: string
+      subJsonURI:
+        description: JSON subscription server URI
+        type: string
+      subKeyFile:
+        description: SSL private key file for subscription server
+        type: string
+      subListen:
+        description: Subscription server listen IP
+        type: string
+      subPath:
+        description: Base path for subscription URLs
+        type: string
+      subPort:
+        description: Subscription server port
+        type: integer
+      subProfileUrl:
+        description: Subscription profile URL
+        type: string
+      subRoutingRules:
+        description: Subscription global routing rules (Only for Happ)
+        type: string
+      subShowInfo:
+        description: Show client information in subscriptions
+        type: boolean
+      subSupportUrl:
+        description: Subscription support URL
+        type: string
+      subTitle:
+        description: Subscription title
+        type: string
+      subURI:
+        description: Subscription server URI
+        type: string
+      subUpdates:
+        description: Subscription update interval in minutes
+        type: integer
+      tgBotAPIServer:
+        description: Custom API server for Telegram bot
+        type: string
+      tgBotBackup:
+        description: Enable database backup via Telegram
+        type: boolean
+      tgBotChatId:
+        description: Telegram chat ID for notifications
+        type: string
+      tgBotEnable:
+        description: Telegram bot settings
+        type: boolean
+      tgBotLoginNotify:
+        description: Send login notifications
+        type: boolean
+      tgBotProxy:
+        description: Proxy URL for Telegram bot
+        type: string
+      tgBotToken:
+        description: Telegram bot token
+        type: string
+      tgCpu:
+        description: CPU usage threshold for alerts
+        type: integer
+      tgLang:
+        description: Telegram bot language
+        type: string
+      tgRunTime:
+        description: Cron schedule for Telegram notifications
+        type: string
+      timeLocation:
+        description: Security settings
+        type: string
+      trafficDiff:
+        description: Traffic warning threshold percentage
+        type: integer
+      twoFactorEnable:
+        description: Enable two-factor authentication
+        type: boolean
+      twoFactorToken:
+        description: Two-factor authentication token
+        type: string
+      webBasePath:
+        description: Base path for web panel URLs
+        type: string
+      webCertFile:
+        description: Path to SSL certificate file for web server
+        type: string
+      webDomain:
+        description: Web server domain for domain validation
+        type: string
+      webKeyFile:
+        description: Path to SSL private key file for web server
+        type: string
+      webListen:
+        description: Web server settings
+        type: string
+      webPort:
+        description: Web server port number
+        type: integer
+    type: object
+  entity.Msg:
+    properties:
+      msg:
+        description: Response message text
+        type: string
+      obj:
+        description: Optional data object
+      success:
+        description: Indicates if the operation was successful
+        type: boolean
+    type: object
+  model.Inbound:
+    properties:
+      allTime:
+        description: All-time traffic usage
+        type: integer
+      clientStats:
+        description: Client traffic statistics
+        items:
+          $ref: '#/definitions/xray.ClientTraffic'
+        type: array
+      down:
+        description: Download traffic in bytes
+        type: integer
+      enable:
+        description: Whether the inbound is enabled
+        type: boolean
+      expiryTime:
+        description: Expiration timestamp
+        type: integer
+      id:
+        description: Unique identifier
+        type: integer
+      lastTrafficResetTime:
+        description: Last traffic reset timestamp
+        type: integer
+      listen:
+        description: Xray configuration fields
+        type: string
+      nodeId:
+        description: |-
+          NodeID points at the remote panel (Node) where this inbound's xray
+          actually runs. NULL means the inbound runs on the local xray (the
+          pre-multi-node behaviour). Existing rows migrate to NULL with no
+          backfill.
+        type: integer
+      port:
+        type: integer
+      protocol:
+        $ref: '#/definitions/model.Protocol'
+      remark:
+        description: Human-readable remark
+        type: string
+      settings:
+        type: string
+      sniffing:
+        type: string
+      streamSettings:
+        type: string
+      tag:
+        type: string
+      total:
+        description: Total traffic limit in bytes
+        type: integer
+      trafficReset:
+        description: Traffic reset schedule
+        type: string
+      up:
+        description: Upload traffic in bytes
+        type: integer
+    type: object
+  model.Node:
+    properties:
+      address:
+        type: string
+      apiToken:
+        type: string
+      basePath:
+        type: string
+      cpuPct:
+        type: number
+      createdAt:
+        type: integer
+      enable:
+        type: boolean
+      id:
+        type: integer
+      lastError:
+        type: string
+      lastHeartbeat:
+        description: unix seconds, 0 = never
+        type: integer
+      latencyMs:
+        type: integer
+      memPct:
+        type: number
+      name:
+        type: string
+      port:
+        type: integer
+      remark:
+        type: string
+      scheme:
+        type: string
+      status:
+        description: |-
+          Heartbeat-updated fields. UpdatedAt advances on every probe even when
+          the row is otherwise unchanged so the UI's "last seen" tooltip is
+          truthful without us having to read LastHeartbeat separately.
+        type: string
+      updatedAt:
+        type: integer
+      uptimeSecs:
+        type: integer
+      xrayVersion:
+        type: string
+    type: object
+  model.Protocol:
+    enum:
+    - vmess
+    - vless
+    - tunnel
+    - http
+    - trojan
+    - shadowsocks
+    - mixed
+    - wireguard
+    - hysteria
+    - hysteria2
+    type: string
+    x-enum-varnames:
+    - VMESS
+    - VLESS
+    - Tunnel
+    - HTTP
+    - Trojan
+    - Shadowsocks
+    - Mixed
+    - WireGuard
+    - Hysteria
+    - Hysteria2
+  xray.ClientTraffic:
+    properties:
+      allTime:
+        type: integer
+      down:
+        type: integer
+      email:
+        type: string
+      enable:
+        type: boolean
+      expiryTime:
+        type: integer
+      id:
+        type: integer
+      inboundId:
+        type: integer
+      lastOnline:
+        type: integer
+      reset:
+        type: integer
+      subId:
+        type: string
+      total:
+        type: integer
+      up:
+        type: integer
+      uuid:
+        type: string
+    type: object
+host: localhost:2053
+info:
+  contact:
+    name: MHSanaei
+    url: https://github.com/MHSanaei/3x-ui
+  description: Advanced web panel for managing Xray-core servers. Supports VMESS,
+    VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.
+  license:
+    name: GNU GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  termsOfService: https://github.com/MHSanaei/3x-ui
+  title: 3X-UI Panel API
+  version: 3.0.1
+paths:
+  /:
+    get:
+      description: If authenticated, redirects to /panel/. Otherwise serves the login
+        SPA.
+      responses:
+        "302":
+          description: Found
+      summary: Redirect to panel or show login page
+      tags:
+      - Authentication
+  /csrf-token:
+    get:
+      description: Returns a CSRF token for the current session. Required by the SPA
+        for unsafe requests. Public endpoint — no auth needed.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      summary: Get CSRF token
+      tags:
+      - Authentication
+  /getTwoFactorEnable:
+    post:
+      description: Returns whether two-factor authentication is enabled on the panel.
+        Used by the login page to decide whether to show the OTP field.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      summary: Check if 2FA is enabled
+      tags:
+      - Authentication
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login with username and password. Returns a session cookie on success.
+        Supports optional 2FA TOTP code.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logged in successfully
+          schema:
+            $ref: '#/definitions/entity.Msg'
+        "401":
+          description: Wrong username or password
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      summary: Authenticate user
+      tags:
+      - Authentication
+  /logout:
+    get:
+      description: Clears the session cookie and redirects to the login page.
+      responses:
+        "302":
+          description: Found
+      summary: Logout
+      tags:
+      - Authentication
+  /panel/api/backuptotgbot:
+    get:
+      description: Sends a fresh database backup to every Telegram chat configured
+        as an admin recipient.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Backup to Telegram
+      tags:
+      - Backup
+  /panel/api/custom-geo/add:
+    post:
+      consumes:
+      - application/json
+      description: Registers a custom geo source. Alias is auto-normalised; URL must
+        point to a .dat or .json file.
+      parameters:
+      - description: Custom geo source details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.customGeoForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Add custom geo source
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/aliases:
+    get:
+      description: Returns geo aliases usable in routing rules — both built-in defaults
+        and user-configured ones.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: List geo aliases
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/delete/{id}:
+    post:
+      description: Removes a custom geo source and its cached file from disk.
+      parameters:
+      - description: Custom geo source ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete custom geo source
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/download/{id}:
+    post:
+      description: Triggers a re-download of a custom geo source from its URL.
+      parameters:
+      - description: Custom geo source ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Download custom geo file
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/list:
+    get:
+      description: Returns all configured custom geo sources with type, alias, URL,
+        status, and download timestamps.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: List custom geo sources
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/update-all:
+    post:
+      description: Re-downloads every configured custom geo source. Errors are reported
+        per-source in the response.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update all custom geo sources
+      tags:
+      - Custom Geo
+  /panel/api/custom-geo/update/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Replaces a custom geo source configuration. Body shape matches
+        /add.
+      parameters:
+      - description: Custom geo source ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated source details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.customGeoForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update custom geo source
+      tags:
+      - Custom Geo
+  /panel/api/inbounds/{id}/copyClients:
+    post:
+      consumes:
+      - application/json
+      description: Copies selected clients from one inbound to another. Useful for
+        duplicating user lists across protocols.
+      parameters:
+      - description: Target inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Copy request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CopyInboundClientsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Copy clients between inbounds
+      tags:
+      - Inbounds
+  /panel/api/inbounds/{id}/delClient/{clientId}:
+    post:
+      description: Removes a client from an inbound by its UUID/password.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Client UUID or password
+        in: path
+        name: clientId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete client from inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/{id}/delClientByEmail/{email}:
+    post:
+      description: Removes a client from an inbound using email instead of UUID.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete client by email
+      tags:
+      - Inbounds
+  /panel/api/inbounds/{id}/resetClientTraffic/{email}:
+    post:
+      description: Zeros out upload and download counters for a single client.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Reset client traffic
+      tags:
+      - Inbounds
+  /panel/api/inbounds/add:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new inbound configuration with protocol, port, stream
+        settings, and clients.
+      parameters:
+      - description: Inbound configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Inbound'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Create inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/addClient:
+    post:
+      consumes:
+      - application/json
+      description: Adds one or more clients to an existing inbound. The settings field
+        carries the JSON-encoded clients array.
+      parameters:
+      - description: Inbound with new client settings
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Inbound'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Add client to inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/clearClientIps/{email}:
+    post:
+      description: Resets the recorded IP address list for a client.
+      parameters:
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Clear client IPs
+      tags:
+      - Inbounds
+  /panel/api/inbounds/clientIps/{email}:
+    post:
+      description: Returns source IPs that have connected with the given client's
+        credentials. Includes timestamps.
+      parameters:
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get client IPs
+      tags:
+      - Inbounds
+  /panel/api/inbounds/del/{id}:
+    post:
+      description: Deletes an inbound and its associated client traffic stats by ID.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/delDepletedClients/{id}:
+    post:
+      description: Removes clients whose traffic cap or expiry has elapsed. Pass id=-1
+        to sweep every inbound.
+      parameters:
+      - description: Inbound ID, or -1 for all
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete depleted clients
+      tags:
+      - Inbounds
+  /panel/api/inbounds/get/{id}:
+    get:
+      description: Fetch a single inbound configuration with traffic stats.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Msg'
+            - properties:
+                obj:
+                  $ref: '#/definitions/model.Inbound'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get inbound by ID
+      tags:
+      - Inbounds
+  /panel/api/inbounds/getClientLinks/{id}/{email}:
+    get:
+      description: Returns the URL(s) for one client on one inbound (same as the Copy
+        URL button in the UI). Supports vmess, vless, trojan, shadowsocks, hysteria,
+        hysteria2.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Msg'
+            - properties:
+                obj:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get client links
+      tags:
+      - Inbounds
+  /panel/api/inbounds/getClientTraffics/{email}:
+    get:
+      description: Returns traffic counters for a client identified by email.
+      parameters:
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get client traffic by email
+      tags:
+      - Inbounds
+  /panel/api/inbounds/getClientTrafficsById/{id}:
+    get:
+      description: Returns traffic counters for a client identified by its UUID/password.
+      parameters:
+      - description: Client UUID or password
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get client traffic by ID
+      tags:
+      - Inbounds
+  /panel/api/inbounds/getSubLinks/{subId}:
+    get:
+      description: Returns every protocol URL (vless://, vmess://, etc.) for clients
+        matching the subscription ID. Same data as /sub/{subId} but as JSON array.
+      parameters:
+      - description: Subscription ID from client's subId field
+        in: path
+        name: subId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Msg'
+            - properties:
+                obj:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get subscription links
+      tags:
+      - Inbounds
+  /panel/api/inbounds/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Bulk-imports an inbound from a JSON blob (e.g., exported from another
+        panel). Uses form encoding with a single "data" field.
+      parameters:
+      - description: JSON-encoded inbound configuration
+        in: formData
+        name: data
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Import inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/lastOnline:
+    post:
+      description: Returns a map of client email to last-seen unix timestamp.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get last online timestamps
+      tags:
+      - Inbounds
+  /panel/api/inbounds/list:
+    get:
+      description: Returns all inbounds owned by the authenticated user, including
+        client traffic stats.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Msg'
+            - properties:
+                obj:
+                  items:
+                    $ref: '#/definitions/model.Inbound'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: List inbounds
+      tags:
+      - Inbounds
+  /panel/api/inbounds/onlines:
+    post:
+      description: Returns emails of currently connected clients (last seen within
+        heartbeat window).
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get online clients
+      tags:
+      - Inbounds
+  /panel/api/inbounds/resetAllClientTraffics/{id}:
+    post:
+      description: Resets traffic for every client in a specific inbound.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Reset all client traffic in inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/resetAllTraffics:
+    post:
+      description: Resets upload and download counters on every inbound. Destructive
+        — accounting history is lost.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Reset all traffic
+      tags:
+      - Inbounds
+  /panel/api/inbounds/setEnable/{id}:
+    post:
+      description: Flips the enable flag without serialising the full settings JSON.
+        Lightweight alternative to /update for UI switches.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Enable flag
+        in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            enable:
+              type: boolean
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Toggle inbound enable
+      tags:
+      - Inbounds
+  /panel/api/inbounds/update/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Replaces an inbound configuration. Body shape matches /add.
+      parameters:
+      - description: Inbound ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated inbound configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Inbound'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/updateClient/{clientId}:
+    post:
+      consumes:
+      - application/json
+      description: Updates a single client's configuration without rewriting the whole
+        settings JSON.
+      parameters:
+      - description: Client UUID or password
+        in: path
+        name: clientId
+        required: true
+        type: string
+      - description: Inbound payload with updated client settings
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Inbound'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update client in inbound
+      tags:
+      - Inbounds
+  /panel/api/inbounds/updateClientTraffic/{email}:
+    post:
+      consumes:
+      - application/json
+      description: Manually adjusts a client's upload and download counters. Useful
+        for migrations from external accounting systems.
+      parameters:
+      - description: Client email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: Traffic values in bytes
+        in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            download:
+              format: int64
+              type: integer
+            upload:
+              format: int64
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update client traffic manually
+      tags:
+      - Inbounds
+  /panel/api/nodes/add:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new remote node. Provide URL, API token, and optional
+        label.
+      parameters:
+      - description: Node configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Node'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Add node
+      tags:
+      - Nodes
+  /panel/api/nodes/del/{id}:
+    post:
+      description: Deletes a node. Inbounds bound to it are not auto-migrated.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Delete node
+      tags:
+      - Nodes
+  /panel/api/nodes/get/{id}:
+    get:
+      description: Fetch a single node configuration by ID.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get node by ID
+      tags:
+      - Nodes
+  /panel/api/nodes/history/{id}/{metric}/{bucket}:
+    get:
+      description: Returns aggregated metric history for a node. Same shape as /server/history,
+        scoped to one node.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Metric key (cpu, mem, netIn, netOut, etc.)
+        in: path
+        name: metric
+        required: true
+        type: string
+      - description: Bucket size in seconds
+        in: path
+        name: bucket
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get node metric history
+      tags:
+      - Nodes
+  /panel/api/nodes/list:
+    get:
+      description: Returns every configured node with connection details, health status,
+        and last heartbeat info.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: List nodes
+      tags:
+      - Nodes
+  /panel/api/nodes/probe/{id}:
+    post:
+      description: Probes an existing node and updates its cached health state and
+        heartbeat.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Probe existing node
+      tags:
+      - Nodes
+  /panel/api/nodes/setEnable/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Pauses or resumes traffic sync with a remote node.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Enable flag
+        in: body
+        name: body
+        required: true
+        schema:
+          properties:
+            enable:
+              type: boolean
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Toggle node enable
+      tags:
+      - Nodes
+  /panel/api/nodes/test:
+    post:
+      consumes:
+      - application/json
+      description: Probes a node without saving it. Returns whether the handshake
+        succeeds.
+      parameters:
+      - description: Node connection details to test
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Node'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Test node connection
+      tags:
+      - Nodes
+  /panel/api/nodes/update/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Replaces a node's connection details. Body shape matches /add.
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated node configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/model.Node'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update node
+      tags:
+      - Nodes
+  /panel/api/server/cpuHistory/{bucket}:
+    get:
+      description: 'Legacy: aggregated CPU history. Use /history/cpu/{bucket} instead.'
+      parameters:
+      - description: Bucket size in seconds (2, 30, 60, 120, 180, 300)
+        in: path
+        name: bucket
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get CPU history (legacy)
+      tags:
+      - Server
+  /panel/api/server/getConfigJson:
+    get:
+      description: Returns the assembled Xray configuration that is currently running
+        on this host.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get Xray config JSON
+      tags:
+      - Server
+  /panel/api/server/getDb:
+    post:
+      consumes:
+      - application/json
+      description: Exports the SQLite database file as an attachment. Requires password
+        verification.
+      parameters:
+      - description: Password for verification
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.getDbPasswordRequest'
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Database file download
+          schema:
+            type: file
+      security:
+      - BearerAuth: []
+      summary: Export database
+      tags:
+      - Server
+  /panel/api/server/getNewEchCert:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Generates a new Encrypted Client Hello (ECH) keypair.
+      parameters:
+      - description: SNI for ECH certificate
+        in: formData
+        name: sni
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate ECH keypair
+      tags:
+      - Server
+  /panel/api/server/getNewUUID:
+    get:
+      description: Generates a fresh UUID v4. Convenience helper for client IDs.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate UUID
+      tags:
+      - Server
+  /panel/api/server/getNewVlessEnc:
+    get:
+      description: Generates a new VLESS encryption keypair.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate VLESS encryption key
+      tags:
+      - Server
+  /panel/api/server/getNewX25519Cert:
+    get:
+      description: Generates a new X25519 keypair for Reality TLS. Returns public
+        and private keys.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate X25519 keypair
+      tags:
+      - Server
+  /panel/api/server/getNewmldsa65:
+    get:
+      description: Generates a new ML-DSA-65 post-quantum signature keypair.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate ML-DSA-65 keypair
+      tags:
+      - Server
+  /panel/api/server/getNewmlkem768:
+    get:
+      description: Generates a new ML-KEM-768 post-quantum KEM keypair.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Generate ML-KEM-768 keypair
+      tags:
+      - Server
+  /panel/api/server/getPanelUpdateInfo:
+    get:
+      description: Checks whether a newer 3x-ui release is available on GitHub.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Check panel updates
+      tags:
+      - Server
+  /panel/api/server/getXrayVersion:
+    get:
+      description: Lists Xray binary versions available for install on this host.
+        Cached for 15 minutes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get available Xray versions
+      tags:
+      - Server
+  /panel/api/server/history/{metric}/{bucket}:
+    get:
+      description: Returns up to 60 buckets of aggregated time-series data for a single
+        metric (cpu, mem, swap, netIn, netOut, tcpCount, udpCount, load1, online).
+      parameters:
+      - description: Metric name (cpu, mem, swap, netIn, netOut, tcpCount, udpCount,
+          load1, online)
+        in: path
+        name: metric
+        required: true
+        type: string
+      - description: Bucket size in seconds (2, 30, 60, 120, 180, 300)
+        in: path
+        name: bucket
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get metric history
+      tags:
+      - Server
+  /panel/api/server/importDB:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Restores the panel DB from an uploaded SQLite file. Panel restarts
+        after restore. Destructive.
+      parameters:
+      - description: SQLite database file
+        in: formData
+        name: db
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Import database
+      tags:
+      - Server
+  /panel/api/server/installXray/{version}:
+    post:
+      description: Downloads and installs the specified Xray version. Pass "latest"
+        for the newest release.
+      parameters:
+      - description: Xray tag (e.g. v25.10.31) or 'latest'
+        in: path
+        name: version
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Install/update Xray
+      tags:
+      - Server
+  /panel/api/server/logs/{count}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Returns the last N lines of the panel's log file with optional
+        level and syslog filtering.
+      parameters:
+      - description: Number of trailing log lines
+        in: path
+        name: count
+        required: true
+        type: integer
+      - description: Log level filter (info, warning, error, debug)
+        in: formData
+        name: level
+        type: string
+      - description: Include syslog output
+        in: formData
+        name: syslog
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get panel logs
+      tags:
+      - Server
+  /panel/api/server/restartXrayService:
+    post:
+      description: Reloads Xray with the current configuration. Required after structural
+        inbound or routing changes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Restart Xray service
+      tags:
+      - Server
+  /panel/api/server/status:
+    get:
+      description: 'Returns real-time machine snapshot: CPU, memory, swap, disk, network
+        IO, load averages, open connections, Xray state. Cached and refreshed every
+        2 seconds.'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get server status
+      tags:
+      - Server
+  /panel/api/server/stopXrayService:
+    post:
+      description: Stops the Xray binary. All proxies go offline immediately.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Stop Xray service
+      tags:
+      - Server
+  /panel/api/server/updateGeofile:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Refreshes a GeoIP/GeoSite data file. Can specify filename or use
+        default.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update geo file
+      tags:
+      - Server
+  /panel/api/server/updatePanel:
+    post:
+      description: Updates the panel to the latest release. The server restarts on
+        success.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Self-update panel
+      tags:
+      - Server
+  /panel/api/server/xraylogs/{count}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Returns the last N lines of the Xray process log with optional
+        traffic type filtering.
+      parameters:
+      - description: Number of trailing log lines
+        in: path
+        name: count
+        required: true
+        type: integer
+      - description: Log filter string
+        in: formData
+        name: filter
+        type: string
+      - description: Show direct traffic logs
+        in: formData
+        name: showDirect
+        type: string
+      - description: Show blocked traffic logs
+        in: formData
+        name: showBlocked
+        type: string
+      - description: Show proxy traffic logs
+        in: formData
+        name: showProxy
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get Xray logs
+      tags:
+      - Server
+  /panel/csrf-token:
+    get:
+      description: Returns a CSRF token for authenticated SPA clients. Requires login
+        session.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get CSRF token (authenticated)
+      tags:
+      - Authentication
+  /panel/setting/all:
+    post:
+      description: Returns all panel configuration settings including web server,
+        Telegram bot, subscription, security, and LDAP settings.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/entity.Msg'
+            - properties:
+                obj:
+                  $ref: '#/definitions/entity.AllSetting'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all settings
+      tags:
+      - Settings
+  /panel/setting/defaultSettings:
+    post:
+      description: Returns the default panel settings based on the request host.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get default settings
+      tags:
+      - Settings
+  /panel/setting/getApiToken:
+    get:
+      description: Returns the panel's API token used for Bearer authentication. Auto-generated
+        on first read for seamless upgrades.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get API token
+      tags:
+      - Settings
+  /panel/setting/getDefaultJsonConfig:
+    get:
+      description: Returns the default Xray configuration template.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get default Xray config
+      tags:
+      - Settings
+  /panel/setting/regenerateApiToken:
+    post:
+      description: Rotates the API token. Existing integrations using the old token
+        will immediately fail until updated.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Regenerate API token
+      tags:
+      - Settings
+  /panel/setting/restartPanel:
+    post:
+      description: Restarts the panel service after a 3-second delay.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Restart panel
+      tags:
+      - Settings
+  /panel/setting/update:
+    post:
+      consumes:
+      - application/json
+      description: Updates all panel settings with the provided configuration.
+      parameters:
+      - description: All panel settings
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AllSetting'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update settings
+      tags:
+      - Settings
+  /panel/setting/updateUser:
+    post:
+      consumes:
+      - application/json
+      description: Changes the panel admin username and password. Requires old credentials
+        for verification.
+      parameters:
+      - description: Old and new credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.updateUserForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update user credentials
+      tags:
+      - Settings
+  /panel/xray/:
+    post:
+      description: Returns the Xray configuration template, inbound tags, and outbound
+        test URL.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get Xray settings
+      tags:
+      - Xray Settings
+  /panel/xray/getDefaultJsonConfig:
+    get:
+      description: Returns the default Xray configuration template.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get default Xray config
+      tags:
+      - Xray Settings
+  /panel/xray/getOutboundsTraffic:
+    get:
+      description: Returns traffic statistics for all Xray outbounds.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get outbounds traffic
+      tags:
+      - Xray Settings
+  /panel/xray/getXrayResult:
+    get:
+      description: Returns the current Xray process output/status.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Get Xray result
+      tags:
+      - Xray Settings
+  /panel/xray/nord/{action}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 'Manages NordVPN integration: list countries, servers, register,
+        set key, get data, delete.'
+      parameters:
+      - description: Action (countries, servers, reg, setKey, data, del)
+        in: path
+        name: action
+        required: true
+        type: string
+      - description: Country ID for server list
+        in: formData
+        name: countryId
+        type: string
+      - description: NordVPN API token for registration
+        in: formData
+        name: token
+        type: string
+      - description: Access key
+        in: formData
+        name: key
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: NordVPN operations
+      tags:
+      - Xray Settings
+  /panel/xray/resetOutboundsTraffic:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Resets traffic statistics for a specified outbound by tag.
+      parameters:
+      - description: Outbound tag to reset
+        in: formData
+        name: tag
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Reset outbound traffic
+      tags:
+      - Xray Settings
+  /panel/xray/testOutbound:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Tests an outbound configuration and returns the delay/response
+        time. Supports TCP probe mode for parallel-safe testing.
+      parameters:
+      - description: Outbound configuration JSON
+        in: formData
+        name: outbound
+        required: true
+        type: string
+      - description: JSON array of all outbounds (for dependency resolution)
+        in: formData
+        name: allOutbounds
+        type: string
+      - description: 'Test mode: ''tcp'' for fast dial-only probe'
+        in: formData
+        name: mode
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Test outbound
+      tags:
+      - Xray Settings
+  /panel/xray/update:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Updates the Xray configuration and outbound test URL.
+      parameters:
+      - description: Xray configuration JSON
+        in: formData
+        name: xraySetting
+        required: true
+        type: string
+      - description: Outbound test URL
+        in: formData
+        name: outboundTestUrl
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Update Xray settings
+      tags:
+      - Xray Settings
+  /panel/xray/warp/{action}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 'Manages Warp integration: get data, delete, get config, register,
+        set license.'
+      parameters:
+      - description: Action (data, del, config, reg, license)
+        in: path
+        name: action
+        required: true
+        type: string
+      - description: Private key for registration
+        in: formData
+        name: privateKey
+        type: string
+      - description: Public key for registration
+        in: formData
+        name: publicKey
+        type: string
+      - description: License key
+        in: formData
+        name: license
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Msg'
+      security:
+      - BearerAuth: []
+      summary: Warp operations
+      tags:
+      - Xray Settings
+securityDefinitions:
+  BearerAuth:
+    description: 'Bearer token authentication. Use format: "Bearer <token>". Get your
+      token from Settings → Security → API Token.'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

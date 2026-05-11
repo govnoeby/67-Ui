@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// LoginForm represents the login request structure.
+// @Description Login form with username, password and optional 2FA code.
 type LoginForm struct {
 	Username      string `json:"username" form:"username"`
 	Password      string `json:"password" form:"password"`
@@ -51,7 +51,11 @@ func (a *IndexController) initRouter(g *gin.RouterGroup) {
 	g.POST("/getTwoFactorEnable", middleware.CSRFMiddleware(), a.getTwoFactorEnable)
 }
 
-// index handles the root route, redirecting logged-in users to the panel or showing the login page.
+// @Summary      Redirect to panel or show login page
+// @Description  If authenticated, redirects to /panel/. Otherwise serves the login SPA.
+// @Tags         Authentication
+// @Success      302
+// @Router       / [get]
 func (a *IndexController) index(c *gin.Context) {
 	if session.IsLogin(c) {
 		c.Header("Cache-Control", "no-store")
@@ -61,7 +65,15 @@ func (a *IndexController) index(c *gin.Context) {
 	serveDistPage(c, "login.html")
 }
 
-// login handles user authentication and session creation.
+// @Summary      Authenticate user
+// @Description  Login with username and password. Returns a session cookie on success. Supports optional 2FA TOTP code.
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        body body LoginForm true "Login credentials"
+// @Success      200 {object} entity.Msg "Logged in successfully"
+// @Failure      401 {object} entity.Msg "Wrong username or password"
+// @Router       /login [post]
 func (a *IndexController) login(c *gin.Context) {
 	var form LoginForm
 
@@ -140,7 +152,11 @@ func loginFailureReason(err error) string {
 	return "invalid credentials"
 }
 
-// logout handles user logout by clearing the session and redirecting to the login page.
+// @Summary      Logout
+// @Description  Clears the session cookie and redirects to the login page.
+// @Tags         Authentication
+// @Success      302
+// @Router       /logout [get]
 func (a *IndexController) logout(c *gin.Context) {
 	user := session.GetLoginUser(c)
 	if user != nil {
@@ -153,8 +169,12 @@ func (a *IndexController) logout(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, c.GetString("base_path"))
 }
 
-// csrfToken returns the session CSRF token. Public — the login page
-// needs a token before authenticating.
+// @Summary      Get CSRF token
+// @Description  Returns a CSRF token for the current session. Required by the SPA for unsafe requests. Public endpoint — no auth needed.
+// @Tags         Authentication
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Router       /csrf-token [get]
 func (a *IndexController) csrfToken(c *gin.Context) {
 	token, err := session.EnsureCSRFToken(c)
 	if err != nil {
@@ -164,7 +184,12 @@ func (a *IndexController) csrfToken(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": true, "obj": token})
 }
 
-// getTwoFactorEnable retrieves the current status of two-factor authentication.
+// @Summary      Check if 2FA is enabled
+// @Description  Returns whether two-factor authentication is enabled on the panel. Used by the login page to decide whether to show the OTP field.
+// @Tags         Authentication
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Router       /getTwoFactorEnable [post]
 func (a *IndexController) getTwoFactorEnable(c *gin.Context) {
 	status, err := a.settingService.GetTwoFactorEnable()
 	if err == nil {

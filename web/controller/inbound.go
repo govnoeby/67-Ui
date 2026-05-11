@@ -94,7 +94,13 @@ type CopyInboundClientsRequest struct {
 	Flow            string   `form:"flow" json:"flow"`
 }
 
-// getInbounds retrieves the list of inbounds for the logged-in user.
+// @Summary      List inbounds
+// @Description  Returns all inbounds owned by the authenticated user, including client traffic stats.
+// @Tags         Inbounds
+// @Produce      json
+// @Success      200 {object} entity.Msg{obj=[]model.Inbound}
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/list [get]
 func (a *InboundController) getInbounds(c *gin.Context) {
 	user := session.GetLoginUser(c)
 	inbounds, err := a.inboundService.GetInbounds(user.Id)
@@ -105,7 +111,14 @@ func (a *InboundController) getInbounds(c *gin.Context) {
 	jsonObj(c, inbounds, nil)
 }
 
-// getInbound retrieves a specific inbound by its ID.
+// @Summary      Get inbound by ID
+// @Description  Fetch a single inbound configuration with traffic stats.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Success      200 {object} entity.Msg{obj=model.Inbound}
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/get/{id} [get]
 func (a *InboundController) getInbound(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -120,7 +133,14 @@ func (a *InboundController) getInbound(c *gin.Context) {
 	jsonObj(c, inbound, nil)
 }
 
-// getClientTraffics retrieves client traffic information by email.
+// @Summary      Get client traffic by email
+// @Description  Returns traffic counters for a client identified by email.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/getClientTraffics/{email} [get]
 func (a *InboundController) getClientTraffics(c *gin.Context) {
 	email := c.Param("email")
 	clientTraffics, err := a.inboundService.GetClientTrafficByEmail(email)
@@ -131,7 +151,14 @@ func (a *InboundController) getClientTraffics(c *gin.Context) {
 	jsonObj(c, clientTraffics, nil)
 }
 
-// getClientTrafficsById retrieves client traffic information by inbound ID.
+// @Summary      Get client traffic by ID
+// @Description  Returns traffic counters for a client identified by its UUID/password.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path string true "Client UUID or password"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/getClientTrafficsById/{id} [get]
 func (a *InboundController) getClientTrafficsById(c *gin.Context) {
 	id := c.Param("id")
 	clientTraffics, err := a.inboundService.GetClientTrafficByID(id)
@@ -142,7 +169,15 @@ func (a *InboundController) getClientTrafficsById(c *gin.Context) {
 	jsonObj(c, clientTraffics, nil)
 }
 
-// addInbound creates a new inbound configuration.
+// @Summary      Create inbound
+// @Description  Creates a new inbound configuration with protocol, port, stream settings, and clients.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        body body model.Inbound true "Inbound configuration"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/add [post]
 func (a *InboundController) addInbound(c *gin.Context) {
 	inbound := &model.Inbound{}
 	err := c.ShouldBind(inbound)
@@ -183,7 +218,14 @@ func (a *InboundController) addInbound(c *gin.Context) {
 	a.broadcastInboundsUpdate(user.Id)
 }
 
-// delInbound deletes an inbound configuration by its ID.
+// @Summary      Delete inbound
+// @Description  Deletes an inbound and its associated client traffic stats by ID.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/del/{id} [post]
 func (a *InboundController) delInbound(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -203,7 +245,16 @@ func (a *InboundController) delInbound(c *gin.Context) {
 	a.broadcastInboundsUpdate(user.Id)
 }
 
-// updateInbound updates an existing inbound configuration.
+// @Summary      Update inbound
+// @Description  Replaces an inbound configuration. Body shape matches /add.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        body body model.Inbound true "Updated inbound configuration"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/update/{id} [post]
 func (a *InboundController) updateInbound(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -238,11 +289,15 @@ func (a *InboundController) updateInbound(c *gin.Context) {
 	a.broadcastInboundsUpdate(user.Id)
 }
 
-// setInboundEnable flips only the enable flag of an inbound. This is a
-// dedicated endpoint because the regular update path serialises the entire
-// settings JSON (every client) — far too heavy for an interactive switch
-// on inbounds with thousands of clients. Frontend optimistically updates
-// the UI; we just persist + sync xray + nudge other open admin sessions.
+// @Summary      Toggle inbound enable
+// @Description  Flips the enable flag without serialising the full settings JSON. Lightweight alternative to /update for UI switches.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        body body object{enable=bool} true "Enable flag"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/setEnable/{id} [post]
 func (a *InboundController) setInboundEnable(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -273,7 +328,14 @@ func (a *InboundController) setInboundEnable(c *gin.Context) {
 	websocket.BroadcastInvalidate(websocket.MessageTypeInbounds)
 }
 
-// getClientIps retrieves the IP addresses associated with a client by email.
+// @Summary      Get client IPs
+// @Description  Returns source IPs that have connected with the given client's credentials. Includes timestamps.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/clientIps/{email} [post]
 func (a *InboundController) getClientIps(c *gin.Context) {
 	email := c.Param("email")
 
@@ -317,7 +379,14 @@ func (a *InboundController) getClientIps(c *gin.Context) {
 	jsonObj(c, ips, nil)
 }
 
-// clearClientIps clears the IP addresses for a client by email.
+// @Summary      Clear client IPs
+// @Description  Resets the recorded IP address list for a client.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/clearClientIps/{email} [post]
 func (a *InboundController) clearClientIps(c *gin.Context) {
 	email := c.Param("email")
 
@@ -329,7 +398,15 @@ func (a *InboundController) clearClientIps(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.inbounds.toasts.logCleanSuccess"), nil)
 }
 
-// addInboundClient adds a new client to an existing inbound.
+// @Summary      Add client to inbound
+// @Description  Adds one or more clients to an existing inbound. The settings field carries the JSON-encoded clients array.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        body body model.Inbound true "Inbound with new client settings"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/addClient [post]
 func (a *InboundController) addInboundClient(c *gin.Context) {
 	data := &model.Inbound{}
 	err := c.ShouldBind(data)
@@ -349,7 +426,16 @@ func (a *InboundController) addInboundClient(c *gin.Context) {
 	}
 }
 
-// copyInboundClients copies clients from source inbound to target inbound.
+// @Summary      Copy clients between inbounds
+// @Description  Copies selected clients from one inbound to another. Useful for duplicating user lists across protocols.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        id path int true "Target inbound ID"
+// @Param        body body CopyInboundClientsRequest true "Copy request"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/{id}/copyClients [post]
 func (a *InboundController) copyInboundClients(c *gin.Context) {
 	targetID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -379,7 +465,15 @@ func (a *InboundController) copyInboundClients(c *gin.Context) {
 	}
 }
 
-// delInboundClient deletes a client from an inbound by inbound ID and client ID.
+// @Summary      Delete client from inbound
+// @Description  Removes a client from an inbound by its UUID/password.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        clientId path string true "Client UUID or password"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/{id}/delClient/{clientId} [post]
 func (a *InboundController) delInboundClient(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -399,7 +493,16 @@ func (a *InboundController) delInboundClient(c *gin.Context) {
 	}
 }
 
-// updateInboundClient updates a client's configuration in an inbound.
+// @Summary      Update client in inbound
+// @Description  Updates a single client's configuration without rewriting the whole settings JSON.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        clientId path string true "Client UUID or password"
+// @Param        body body model.Inbound true "Inbound payload with updated client settings"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/updateClient/{clientId} [post]
 func (a *InboundController) updateInboundClient(c *gin.Context) {
 	clientId := c.Param("clientId")
 
@@ -421,7 +524,15 @@ func (a *InboundController) updateInboundClient(c *gin.Context) {
 	}
 }
 
-// resetClientTraffic resets the traffic counter for a specific client in an inbound.
+// @Summary      Reset client traffic
+// @Description  Zeros out upload and download counters for a single client.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/{id}/resetClientTraffic/{email} [post]
 func (a *InboundController) resetClientTraffic(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -441,7 +552,13 @@ func (a *InboundController) resetClientTraffic(c *gin.Context) {
 	}
 }
 
-// resetAllTraffics resets all traffic counters across all inbounds.
+// @Summary      Reset all traffic
+// @Description  Resets upload and download counters on every inbound. Destructive — accounting history is lost.
+// @Tags         Inbounds
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/resetAllTraffics [post]
 func (a *InboundController) resetAllTraffics(c *gin.Context) {
 	err := a.inboundService.ResetAllTraffics()
 	if err != nil {
@@ -453,7 +570,14 @@ func (a *InboundController) resetAllTraffics(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.inbounds.toasts.resetAllTrafficSuccess"), nil)
 }
 
-// resetAllClientTraffics resets traffic counters for all clients in a specific inbound.
+// @Summary      Reset all client traffic in inbound
+// @Description  Resets traffic for every client in a specific inbound.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/resetAllClientTraffics/{id} [post]
 func (a *InboundController) resetAllClientTraffics(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -471,7 +595,15 @@ func (a *InboundController) resetAllClientTraffics(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.inbounds.toasts.resetAllClientTrafficSuccess"), nil)
 }
 
-// importInbound imports an inbound configuration from provided data.
+// @Summary      Import inbound
+// @Description  Bulk-imports an inbound from a JSON blob (e.g., exported from another panel). Uses form encoding with a single "data" field.
+// @Tags         Inbounds
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        data formData string true "JSON-encoded inbound configuration"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/import [post]
 func (a *InboundController) importInbound(c *gin.Context) {
 	inbound := &model.Inbound{}
 	err := json.Unmarshal([]byte(c.PostForm("data")), inbound)
@@ -503,7 +635,14 @@ func (a *InboundController) importInbound(c *gin.Context) {
 	}
 }
 
-// delDepletedClients deletes clients in an inbound who have exhausted their traffic limits.
+// @Summary      Delete depleted clients
+// @Description  Removes clients whose traffic cap or expiry has elapsed. Pass id=-1 to sweep every inbound.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID, or -1 for all"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/delDepletedClients/{id} [post]
 func (a *InboundController) delDepletedClients(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -518,18 +657,39 @@ func (a *InboundController) delDepletedClients(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.inbounds.toasts.delDepletedClientsSuccess"), nil)
 }
 
-// onlines retrieves the list of currently online clients.
+// @Summary      Get online clients
+// @Description  Returns emails of currently connected clients (last seen within heartbeat window).
+// @Tags         Inbounds
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/onlines [post]
 func (a *InboundController) onlines(c *gin.Context) {
 	jsonObj(c, a.inboundService.GetOnlineClients(), nil)
 }
 
-// lastOnline retrieves the last online timestamps for clients.
+// @Summary      Get last online timestamps
+// @Description  Returns a map of client email to last-seen unix timestamp.
+// @Tags         Inbounds
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/lastOnline [post]
 func (a *InboundController) lastOnline(c *gin.Context) {
 	data, err := a.inboundService.GetClientsLastOnline()
 	jsonObj(c, data, err)
 }
 
-// updateClientTraffic updates the traffic statistics for a client by email.
+// @Summary      Update client traffic manually
+// @Description  Manually adjusts a client's upload and download counters. Useful for migrations from external accounting systems.
+// @Tags         Inbounds
+// @Accept       json
+// @Produce      json
+// @Param        email path string true "Client email"
+// @Param        body body object{upload=int64,download=int64} true "Traffic values in bytes"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/updateClientTraffic/{email} [post]
 func (a *InboundController) updateClientTraffic(c *gin.Context) {
 	email := c.Param("email")
 
@@ -555,7 +715,15 @@ func (a *InboundController) updateClientTraffic(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.inbounds.toasts.inboundClientUpdateSuccess"), nil)
 }
 
-// delInboundClientByEmail deletes a client from an inbound by email address.
+// @Summary      Delete client by email
+// @Description  Removes a client from an inbound using email instead of UUID.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/{id}/delClientByEmail/{email} [post]
 func (a *InboundController) delInboundClientByEmail(c *gin.Context) {
 	inboundId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -600,8 +768,14 @@ func resolveHost(c *gin.Context) string {
 	return c.Request.Host
 }
 
-// getSubLinks returns every protocol URL produced for the given subscription
-// ID — the JSON-array equivalent of /sub/<subId> (no base64 wrap).
+// @Summary      Get subscription links
+// @Description  Returns every protocol URL (vless://, vmess://, etc.) for clients matching the subscription ID. Same data as /sub/{subId} but as JSON array.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        subId path string true "Subscription ID from client's subId field"
+// @Success      200 {object} entity.Msg{obj=[]string}
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/getSubLinks/{subId} [get]
 func (a *InboundController) getSubLinks(c *gin.Context) {
 	links, err := a.inboundService.GetSubLinks(resolveHost(c), c.Param("subId"))
 	if err != nil {
@@ -611,9 +785,15 @@ func (a *InboundController) getSubLinks(c *gin.Context) {
 	jsonObj(c, links, nil)
 }
 
-// getClientLinks returns the URL(s) for one client on one inbound — the same
-// string the Copy URL button copies in the panel UI. Empty array when the
-// protocol has no URL form, or when the email isn't found on the inbound.
+// @Summary      Get client links
+// @Description  Returns the URL(s) for one client on one inbound (same as the Copy URL button in the UI). Supports vmess, vless, trojan, shadowsocks, hysteria, hysteria2.
+// @Tags         Inbounds
+// @Produce      json
+// @Param        id path int true "Inbound ID"
+// @Param        email path string true "Client email"
+// @Success      200 {object} entity.Msg{obj=[]string}
+// @Security     BearerAuth
+// @Router       /panel/api/inbounds/getClientLinks/{id}/{email} [get]
 func (a *InboundController) getClientLinks(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

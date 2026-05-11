@@ -96,7 +96,13 @@ func (a *ServerController) startTask() {
 	})
 }
 
-// status returns the current server status information.
+// @Summary      Get server status
+// @Description  Returns real-time machine snapshot: CPU, memory, swap, disk, network IO, load averages, open connections, Xray state. Cached and refreshed every 2 seconds.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/status [get]
 func (a *ServerController) status(c *gin.Context) { jsonObj(c, a.lastStatus, nil) }
 
 // allowedHistoryBuckets is the bucket-second whitelist shared by both
@@ -112,9 +118,14 @@ var allowedHistoryBuckets = map[int]bool{
 	300: true, // 5m intervals
 }
 
-// getCpuHistoryBucket retrieves aggregated CPU usage history based on the specified time bucket.
-// Kept for back-compat; new callers should use /history/cpu/:bucket which
-// returns {"t","v"} (uniform across all metrics) instead of {"t","cpu"}.
+// @Summary      Get CPU history (legacy)
+// @Description  Legacy: aggregated CPU history. Use /history/cpu/{bucket} instead.
+// @Tags         Server
+// @Produce      json
+// @Param        bucket path int true "Bucket size in seconds (2, 30, 60, 120, 180, 300)"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/cpuHistory/{bucket} [get]
 func (a *ServerController) getCpuHistoryBucket(c *gin.Context) {
 	bucketStr := c.Param("bucket")
 	bucket, err := strconv.Atoi(bucketStr)
@@ -130,9 +141,15 @@ func (a *ServerController) getCpuHistoryBucket(c *gin.Context) {
 	jsonObj(c, points, nil)
 }
 
-// getMetricHistoryBucket returns up to 60 buckets of history for a single
-// system metric (cpu, mem, netUp, netDown, online, load1/5/15). The
-// SystemHistoryModal calls one endpoint per active tab.
+// @Summary      Get metric history
+// @Description  Returns up to 60 buckets of aggregated time-series data for a single metric (cpu, mem, swap, netIn, netOut, tcpCount, udpCount, load1, online).
+// @Tags         Server
+// @Produce      json
+// @Param        metric path string true "Metric name (cpu, mem, swap, netIn, netOut, tcpCount, udpCount, load1, online)"
+// @Param        bucket path int true "Bucket size in seconds (2, 30, 60, 120, 180, 300)"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/history/{metric}/{bucket} [get]
 func (a *ServerController) getMetricHistoryBucket(c *gin.Context) {
 	metric := c.Param("metric")
 	if !slices.Contains(service.SystemMetricKeys, metric) {
@@ -147,6 +164,13 @@ func (a *ServerController) getMetricHistoryBucket(c *gin.Context) {
 	jsonObj(c, a.serverService.AggregateSystemMetric(metric, bucket, 60), nil)
 }
 
+// @Summary      Get available Xray versions
+// @Description  Lists Xray binary versions available for install on this host. Cached for 15 minutes.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getXrayVersion [get]
 func (a *ServerController) getXrayVersion(c *gin.Context) {
 	const cacheTTLSeconds = 15 * 60
 
@@ -173,7 +197,13 @@ func (a *ServerController) getXrayVersion(c *gin.Context) {
 	jsonObj(c, versions, nil)
 }
 
-// getPanelUpdateInfo retrieves the current and latest panel version.
+// @Summary      Check panel updates
+// @Description  Checks whether a newer 3x-ui release is available on GitHub.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getPanelUpdateInfo [get]
 func (a *ServerController) getPanelUpdateInfo(c *gin.Context) {
 	info, err := a.panelService.GetUpdateInfo()
 	if err != nil {
@@ -184,20 +214,40 @@ func (a *ServerController) getPanelUpdateInfo(c *gin.Context) {
 	jsonObj(c, info, nil)
 }
 
-// installXray installs or updates Xray to the specified version.
+// @Summary      Install/update Xray
+// @Description  Downloads and installs the specified Xray version. Pass "latest" for the newest release.
+// @Tags         Server
+// @Produce      json
+// @Param        version path string true "Xray tag (e.g. v25.10.31) or 'latest'"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/installXray/{version} [post]
 func (a *ServerController) installXray(c *gin.Context) {
 	version := c.Param("version")
 	err := a.serverService.UpdateXray(version)
 	jsonMsg(c, I18nWeb(c, "pages.index.xraySwitchVersionPopover"), err)
 }
 
-// updatePanel starts a panel self-update to the latest release.
+// @Summary      Self-update panel
+// @Description  Updates the panel to the latest release. The server restarts on success.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/updatePanel [post]
 func (a *ServerController) updatePanel(c *gin.Context) {
 	err := a.panelService.StartUpdate()
 	jsonMsg(c, I18nWeb(c, "pages.index.panelUpdateStartedPopover"), err)
 }
 
-// updateGeofile updates the specified geo file for Xray.
+// @Summary      Update geo file
+// @Description  Refreshes a GeoIP/GeoSite data file. Can specify filename or use default.
+// @Tags         Server
+// @Accept       multipart/form-data
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/updateGeofile [post]
 func (a *ServerController) updateGeofile(c *gin.Context) {
 	fileName := c.Param("fileName")
 
@@ -212,7 +262,13 @@ func (a *ServerController) updateGeofile(c *gin.Context) {
 	jsonMsg(c, I18nWeb(c, "pages.index.geofileUpdatePopover"), err)
 }
 
-// stopXrayService stops the Xray service.
+// @Summary      Stop Xray service
+// @Description  Stops the Xray binary. All proxies go offline immediately.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/stopXrayService [post]
 func (a *ServerController) stopXrayService(c *gin.Context) {
 	err := a.serverService.StopXrayService()
 	if err != nil {
@@ -229,7 +285,13 @@ func (a *ServerController) stopXrayService(c *gin.Context) {
 	)
 }
 
-// restartXrayService restarts the Xray service.
+// @Summary      Restart Xray service
+// @Description  Reloads Xray with the current configuration. Required after structural inbound or routing changes.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/restartXrayService [post]
 func (a *ServerController) restartXrayService(c *gin.Context) {
 	err := a.serverService.RestartXrayService()
 	if err != nil {
@@ -246,7 +308,17 @@ func (a *ServerController) restartXrayService(c *gin.Context) {
 	)
 }
 
-// getLogs retrieves the application logs based on count, level, and syslog filters.
+// @Summary      Get panel logs
+// @Description  Returns the last N lines of the panel's log file with optional level and syslog filtering.
+// @Tags         Server
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        count path int true "Number of trailing log lines"
+// @Param        level formData string false "Log level filter (info, warning, error, debug)"
+// @Param        syslog formData bool false "Include syslog output"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/logs/{count} [post]
 func (a *ServerController) getLogs(c *gin.Context) {
 	count := c.Param("count")
 	level := c.PostForm("level")
@@ -255,7 +327,19 @@ func (a *ServerController) getLogs(c *gin.Context) {
 	jsonObj(c, logs, nil)
 }
 
-// getXrayLogs retrieves Xray logs with filtering options for direct, blocked, and proxy traffic.
+// @Summary      Get Xray logs
+// @Description  Returns the last N lines of the Xray process log with optional traffic type filtering.
+// @Tags         Server
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        count path int true "Number of trailing log lines"
+// @Param        filter formData string false "Log filter string"
+// @Param        showDirect formData string false "Show direct traffic logs"
+// @Param        showBlocked formData string false "Show blocked traffic logs"
+// @Param        showProxy formData string false "Show proxy traffic logs"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/xraylogs/{count} [post]
 func (a *ServerController) getXrayLogs(c *gin.Context) {
 	count := c.Param("count")
 	filter := c.PostForm("filter")
@@ -300,7 +384,13 @@ func (a *ServerController) getXrayLogs(c *gin.Context) {
 	jsonObj(c, logs, nil)
 }
 
-// getConfigJson retrieves the Xray configuration as JSON.
+// @Summary      Get Xray config JSON
+// @Description  Returns the assembled Xray configuration that is currently running on this host.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getConfigJson [get]
 func (a *ServerController) getConfigJson(c *gin.Context) {
 	configJson, err := a.serverService.GetConfigJson()
 	if err != nil {
@@ -315,7 +405,15 @@ type getDbPasswordRequest struct {
 	Password string `json:"password"`
 }
 
-// getDb exports the database file after confirming the user's password.
+// @Summary      Export database
+// @Description  Exports the SQLite database file as an attachment. Requires password verification.
+// @Tags         Server
+// @Accept       json
+// @Produce      application/octet-stream
+// @Param        body body getDbPasswordRequest true "Password for verification"
+// @Success      200 {file} binary "Database file download"
+// @Security     BearerAuth
+// @Router       /panel/api/server/getDb [post]
 func (a *ServerController) getDb(c *gin.Context) {
 	var req getDbPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil || req.Password == "" {
@@ -364,7 +462,15 @@ func isValidFilename(filename string) bool {
 	return filenameRegex.MatchString(filename)
 }
 
-// importDB imports a database file and restarts the Xray service.
+// @Summary      Import database
+// @Description  Restores the panel DB from an uploaded SQLite file. Panel restarts after restore. Destructive.
+// @Tags         Server
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        db formData file true "SQLite database file"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/importDB [post]
 func (a *ServerController) importDB(c *gin.Context) {
 	// Get the file from the request body
 	file, _, err := c.Request.FormFile("db")
@@ -381,7 +487,13 @@ func (a *ServerController) importDB(c *gin.Context) {
 	jsonObj(c, I18nWeb(c, "pages.index.importDatabaseSuccess"), nil)
 }
 
-// getNewX25519Cert generates a new X25519 certificate.
+// @Summary      Generate X25519 keypair
+// @Description  Generates a new X25519 keypair for Reality TLS. Returns public and private keys.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewX25519Cert [get]
 func (a *ServerController) getNewX25519Cert(c *gin.Context) {
 	cert, err := a.serverService.GetNewX25519Cert()
 	if err != nil {
@@ -391,7 +503,13 @@ func (a *ServerController) getNewX25519Cert(c *gin.Context) {
 	jsonObj(c, cert, nil)
 }
 
-// getNewmldsa65 generates a new ML-DSA-65 key.
+// @Summary      Generate ML-DSA-65 keypair
+// @Description  Generates a new ML-DSA-65 post-quantum signature keypair.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewmldsa65 [get]
 func (a *ServerController) getNewmldsa65(c *gin.Context) {
 	cert, err := a.serverService.GetNewmldsa65()
 	if err != nil {
@@ -401,7 +519,15 @@ func (a *ServerController) getNewmldsa65(c *gin.Context) {
 	jsonObj(c, cert, nil)
 }
 
-// getNewEchCert generates a new ECH certificate for the given SNI.
+// @Summary      Generate ECH keypair
+// @Description  Generates a new Encrypted Client Hello (ECH) keypair.
+// @Tags         Server
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        sni formData string false "SNI for ECH certificate"
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewEchCert [post]
 func (a *ServerController) getNewEchCert(c *gin.Context) {
 	sni := c.PostForm("sni")
 	cert, err := a.serverService.GetNewEchCert(sni)
@@ -412,7 +538,13 @@ func (a *ServerController) getNewEchCert(c *gin.Context) {
 	jsonObj(c, cert, nil)
 }
 
-// getNewVlessEnc generates a new VLESS encryption key.
+// @Summary      Generate VLESS encryption key
+// @Description  Generates a new VLESS encryption keypair.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewVlessEnc [get]
 func (a *ServerController) getNewVlessEnc(c *gin.Context) {
 	out, err := a.serverService.GetNewVlessEnc()
 	if err != nil {
@@ -422,7 +554,13 @@ func (a *ServerController) getNewVlessEnc(c *gin.Context) {
 	jsonObj(c, out, nil)
 }
 
-// getNewUUID generates a new UUID.
+// @Summary      Generate UUID
+// @Description  Generates a fresh UUID v4. Convenience helper for client IDs.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewUUID [get]
 func (a *ServerController) getNewUUID(c *gin.Context) {
 	uuidResp, err := a.serverService.GetNewUUID()
 	if err != nil {
@@ -433,7 +571,13 @@ func (a *ServerController) getNewUUID(c *gin.Context) {
 	jsonObj(c, uuidResp, nil)
 }
 
-// getNewmlkem768 generates a new ML-KEM-768 key.
+// @Summary      Generate ML-KEM-768 keypair
+// @Description  Generates a new ML-KEM-768 post-quantum KEM keypair.
+// @Tags         Server
+// @Produce      json
+// @Success      200 {object} entity.Msg
+// @Security     BearerAuth
+// @Router       /panel/api/server/getNewmlkem768 [get]
 func (a *ServerController) getNewmlkem768(c *gin.Context) {
 	out, err := a.serverService.GetNewmlkem768()
 	if err != nil {
