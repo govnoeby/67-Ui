@@ -1,11 +1,5 @@
 [English](/README.md) | [Русский](/README.ru_RU.md)
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./media/67-Ui-dark.png">
-    <img alt="67-Ui" src="./media/67-Ui-light.png">
-  </picture>
-</p>
 
 [![Release](https://img.shields.io/github/v/release/govnoeby/67-Ui.svg)](https://github.com/govnoeby/67-Ui/releases)
 [![GO Version](https://img.shields.io/github/go-mod/go-version/govnoeby/67-Ui.svg)](#)
