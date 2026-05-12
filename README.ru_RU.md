@@ -32,5 +32,4 @@ bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/67-Ui/master/install.
 - [Russia v2ray rules](https://github.com/runetfreedom/russia-v2ray-rules-dat) (Лицензия: **GPL-3.0**): _Этот репозиторий содержит автоматически обновляемые правила маршрутизации V2Ray на основе данных о заблокированных доменах и адресах в России._
 
 ## Звезды с течением времени
-
-[![Stargazers over time](https://starchart.cc/govnoeby/67-Ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/67-Ui)
+[![Stargazers over time](https://starchart.cc/govnoeby/67-Ui.svg?variant=dark)](https://starchart.cc/govnoeby/67-Ui)
