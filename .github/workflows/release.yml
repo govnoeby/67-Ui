@@ -15,9 +15,9 @@ on:
       - "**.go"
       - "go.mod"
       - "go.sum"
-      - "x-ui.service.debian"
-      - "x-ui.service.arch"
-      - "x-ui.service.rhel"
+      - "67-ui.service.debian"
+      - "67-ui.service.arch"
+      - "67-ui.service.rhel"
   pull_request:
 
 jobs:
@@ -94,15 +94,15 @@ jobs:
           file xui-release
           ldd xui-release || echo "Static binary confirmed"
 
-          mkdir x-ui
-          cp xui-release x-ui/
-          cp x-ui.service.debian x-ui/
-          cp x-ui.service.arch x-ui/
-          cp x-ui.service.rhel x-ui/
-          cp x-ui.sh x-ui/
-          mv x-ui/xui-release x-ui/x-ui
-          mkdir x-ui/bin
-          cd x-ui/bin
+          mkdir -p 67-ui
+          cp xui-release 67-ui/
+          cp 67-ui.service.debian 67-ui/
+          cp 67-ui.service.arch 67-ui/
+          cp 67-ui.service.rhel 67-ui/
+          cp 67-ui.sh 67-ui/
+          mv 67-ui/xui-release 67-ui/67-ui
+          mkdir -p 67-ui/bin
+          cd 67-ui/bin
 
           # Download dependencies
           Xray_URL="https://github.com/XTLS/Xray-core/releases/download/v26.4.25/"
@@ -146,13 +146,13 @@ jobs:
           cd ../..
 
       - name: Package
-        run: tar -zcvf x-ui-linux-${{ matrix.platform }}.tar.gz x-ui
+        run: tar -zcvf 67-ui-linux-${{ matrix.platform }}.tar.gz 67-ui
 
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: x-ui-linux-${{ matrix.platform }}
-          path: ./x-ui-linux-${{ matrix.platform }}.tar.gz
+          name: 67-ui-linux-${{ matrix.platform }}
+          path: ./67-ui-linux-${{ matrix.platform }}.tar.gz
 
       - name: Upload files to GH release
         uses: svenstaro/upload-release-action@v2
@@ -160,8 +160,8 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
-          file: x-ui-linux-${{ matrix.platform }}.tar.gz
-          asset_name: x-ui-linux-${{ matrix.platform }}.tar.gz
+          file: 67-ui-linux-${{ matrix.platform }}.tar.gz
+          asset_name: 67-ui-linux-${{ matrix.platform }}.tar.gz
           overwrite: true
           prerelease: true
 
@@ -233,10 +233,10 @@ jobs:
       - name: Copy and download resources
         shell: pwsh
         run: |
-          mkdir x-ui
-          Copy-Item xui-release.exe x-ui\x-ui.exe
-          mkdir x-ui\bin
-          cd x-ui\bin
+          mkdir 67-ui
+          Copy-Item xui-release.exe 67-ui\67-ui.exe
+          mkdir 67-ui\bin
+          cd 67-ui\bin
 
           # Download Xray for Windows
           $Xray_URL = "https://github.com/XTLS/Xray-core/releases/download/v26.4.25/"
@@ -258,13 +258,13 @@ jobs:
       - name: Package to Zip
         shell: pwsh
         run: |
-          Compress-Archive -Path .\x-ui -DestinationPath "x-ui-windows-amd64.zip"
+          Compress-Archive -Path .\67-ui -DestinationPath "67-ui-windows-amd64.zip"
 
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: x-ui-windows-amd64
-          path: ./x-ui-windows-amd64.zip
+          name: 67-ui-windows-amd64
+          path: ./67-ui-windows-amd64.zip
 
       - name: Upload files to GH release
         uses: svenstaro/upload-release-action@v2
@@ -272,7 +272,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
-          file: x-ui-windows-amd64.zip
-          asset_name: x-ui-windows-amd64.zip
+          file: 67-ui-windows-amd64.zip
+          asset_name: 67-ui-windows-amd64.zip
           overwrite: true
           prerelease: true
