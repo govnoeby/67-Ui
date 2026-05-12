@@ -1,11 +1,5 @@
 [English](/README.md) | [Русский](/README.ru_RU.md)
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./media/3x-ui-dark.png">
-    <img alt="3x-ui" src="./media/3x-ui-light.png">
-  </picture>
-</p>
 
 [![Release](https://img.shields.io/github/v/release/govnoeby/3x-ui.svg)](https://github.com/govnoeby/3x-ui/releases)
 [![GO Version](https://img.shields.io/github/go-mod/go-version/govnoeby/3x-ui.svg)](#)
