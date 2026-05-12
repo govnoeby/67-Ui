@@ -225,6 +225,51 @@
       "getDatabaseError": "Произошла ошибка при получении базы данных",
       "getConfigError": "Произошла ошибка при получении конфигурационного файла"
     },
+    "apiDocs": {
+      "title": "API Документация",
+      "interactiveDocs": "Интерактивная документация (Swagger)",
+      "lead": "Панель 67-Ui предоставляет REST API по пути <code>/panel/api/</code>. Авторизуйтесь через сессионную cookie панели или через заголовок <code>Authorization: Bearer &lt;token&gt;</code>. Каждый endpoint возвращает единый формат <code>{ success, msg, obj }</code>, если не указано иное.",
+      "apiToken": "API Токен",
+      "hide": "Скрыть",
+      "show": "Показать",
+      "regenerate": "Пересоздать",
+      "quickExample": "Быстрый пример",
+      "onThisPage": "На этой странице",
+      "tokenHint": "Отправляйте его в каждом запросе как <code>Authorization: Bearer &lt;token&gt;</code>. При авторизации по токену CSRF не требуется и сессионная cookie не нужна. Пересоздание токена мгновенно меняет секрет — работающим ботам потребуется новое значение.",
+      "parameters": "Параметры",
+      "requestBody": "Тело запроса",
+      "response": "Ответ",
+      "paramName": "Имя",
+      "paramIn": "В",
+      "paramType": "Тип",
+      "paramDesc": "Описание",
+      "sections": {
+        "auth": {
+          "title": "Аутентификация",
+          "description": "Поддерживаются два режима аутентификации. Сессионные пользователи используют cookie, устанавливаемую endpoint'ом логина. Программные клиенты (боты, скрипты, удалённые панели) авторизуются через Bearer токен из Настройки → Безопасность → API Токен. Оба способа работают для всех endpoint'ов в /panel/api/*."
+        },
+        "inbounds": {
+          "title": "API Входящих подключений",
+          "description": "Управление входящими подключениями и их клиентами. Все endpoint'ы находятся в /panel/api/inbounds и требуют авторизованной сессии или Bearer токена. Endpoint'ы генерации ссылок учитывают X-Forwarded-Host / X-Forwarded-Proto, чтобы за reverse proxy выдавать правильный внешний хост."
+        },
+        "server": {
+          "title": "API Сервера",
+          "description": "Статус системы, получение логов, генерация сертификатов, управление Xray и бэкапами. Всё в /panel/api/server."
+        },
+        "nodes": {
+          "title": "API Нод",
+          "description": "Управление удалёнными панелями 67-Ui, работающими как ноды для центральной панели. Все endpoint'ы в /panel/api/nodes."
+        },
+        "customGeo": {
+          "title": "API Пользовательских Geo",
+          "description": "Управление пользовательскими источниками GeoIP / GeoSite. Все endpoint'ы в /panel/api/custom-geo."
+        },
+        "backup": {
+          "title": "Бэкап",
+          "description": "Операции, взаимодействующие с настроенным Telegram ботом."
+        }
+      }
+    },
     "inbounds": {
       "allTimeTraffic": "Общий трафик",
       "allTimeTrafficUsage": "Общее использование за все время",

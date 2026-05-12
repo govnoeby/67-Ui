@@ -89,18 +89,15 @@ onMounted(() => {
           <div class="docs-wrapper">
             <header class="docs-header">
               <div class="docs-title-row">
-                <h1 class="docs-title">API Documentation</h1>
+                <h1 class="docs-title">{{ t('pages.apiDocs.title') }}</h1>
                 <a :href="`${basePath}swagger/index.html`" target="_blank">
                   <a-button type="primary" size="small">
                     <template #icon><ApiOutlined /></template>
-                    Interactive Docs (Swagger)
+                    {{ t('pages.apiDocs.interactiveDocs') }}
                   </a-button>
                 </a>
               </div>
-              <p class="docs-lead">
-                The 67-Ui panel exposes a REST API under <code>/panel/api/</code>. Authenticate with the panel session
-                cookie, or with the <code>Authorization: Bearer &lt;token&gt;</code> header below. Every endpoint
-                returns a uniform <code>{ success, msg, obj }</code> envelope unless otherwise noted.
+              <p class="docs-lead" v-html="t('pages.apiDocs.lead')">
               </p>
             </header>
 
@@ -108,7 +105,7 @@ onMounted(() => {
               <div class="token-card-head">
                 <div class="token-card-title">
                   <KeyOutlined />
-                  <span>API Token</span>
+                  <span>{{ t('pages.apiDocs.apiToken') }}</span>
                 </div>
                 <a-space size="small" wrap>
                   <a-button size="small" @click="tokenVisible = !tokenVisible">
@@ -116,19 +113,19 @@ onMounted(() => {
                       <EyeInvisibleOutlined v-if="tokenVisible" />
                       <EyeOutlined v-else />
                     </template>
-                    {{ tokenVisible ? 'Hide' : 'Show' }}
+                    {{ tokenVisible ? t('pages.apiDocs.hide') : t('pages.apiDocs.show') }}
                   </a-button>
                   <a-button size="small" :disabled="!apiToken" @click="copyApiToken">
                     <template #icon>
                       <CopyOutlined />
                     </template>
-                    Copy
+                    {{ t('copy') }}
                   </a-button>
                   <a-button size="small" danger :loading="tokenRotating" @click="regenerateApiToken">
                     <template #icon>
                       <ReloadOutlined />
                     </template>
-                    Regenerate
+                    {{ t('pages.apiDocs.regenerate') }}
                   </a-button>
                 </a-space>
               </div>
@@ -136,19 +133,16 @@ onMounted(() => {
                 <pre
                   class="token-value">{{ tokenVisible ? (apiToken || '—') : (apiToken ? '••••••••••••••••••••••••••••' : '—') }}</pre>
               </a-spin>
-              <p class="token-hint">
-                Send it on every request as <code>Authorization: Bearer &lt;token&gt;</code>. Token-authenticated
-                callers skip CSRF and don't need a session cookie. Regenerating rotates the secret immediately —
-                running bots will need the new value.
+              <p class="token-hint" v-html="t('pages.apiDocs.tokenHint')">
               </p>
             </a-card>
 
-            <a-card class="curl-card" size="small" title="Quick example">
+            <a-card class="curl-card" size="small" :title="t('pages.apiDocs.quickExample')">
               <pre class="code-block">{{ curlExample }}</pre>
             </a-card>
 
             <nav class="toc-nav">
-              <span class="toc-label">On this page:</span>
+              <span class="toc-label">{{ t('pages.apiDocs.onThisPage') }}:</span>
               <a v-for="s in sections" :key="s.id" class="toc-link" :href="`#${s.id}`"
                 @click.prevent="scrollToSection(s.id)">
                 {{ s.title }}

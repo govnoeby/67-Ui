@@ -1,20 +1,45 @@
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { methodColors } from './endpoints.js';
+
+const { t } = useI18n();
 
 const props = defineProps({
   endpoint: { type: Object, required: true },
+  sectionId: { type: String, default: '' },
+  endpointIdx: { type: Number, default: -1 },
 });
 
 const tagColor = computed(() => methodColors[props.endpoint.method] || 'default');
 const hasParams = computed(() => Array.isArray(props.endpoint.params) && props.endpoint.params.length > 0);
 
-const paramColumns = [
-  { title: 'Name', dataIndex: 'name', key: 'name', width: 180 },
-  { title: 'In', dataIndex: 'in', key: 'in', width: 100 },
-  { title: 'Type', dataIndex: 'type', key: 'type', width: 120 },
-  { title: 'Description', dataIndex: 'desc', key: 'desc' },
-];
+const translatedParams = computed(() => {
+  if (!props.endpoint.params) return [];
+  return props.endpoint.params.map((p, i) => ({
+    ...p,
+    desc: paramDesc(p, i),
+  }));
+});
+
+function endpointSummary(endpoint) {
+  const key = `pages.apiDocs.sections.${props.sectionId}.endpoints.${props.endpointIdx}.summary`;
+  const translated = t(key);
+  return translated !== key ? translated : endpoint.summary;
+}
+
+function paramDesc(param, idx) {
+  const key = `pages.apiDocs.sections.${props.sectionId}.endpoints.${props.endpointIdx}.params.${idx}.desc`;
+  const translated = t(key);
+  return translated !== key ? translated : param.desc;
+}
+
+const paramColumns = computed(() => [
+  { title: t('pages.apiDocs.paramName'), dataIndex: 'name', key: 'name', width: 180 },
+  { title: t('pages.apiDocs.paramIn'), dataIndex: 'in', key: 'in', width: 100 },
+  { title: t('pages.apiDocs.paramType'), dataIndex: 'type', key: 'type', width: 120 },
+  { title: t('pages.apiDocs.paramDesc'), dataIndex: 'desc', key: 'desc' },
+]);
 </script>
 
 <template>
@@ -24,22 +49,22 @@ const paramColumns = [
       <code class="endpoint-path">{{ endpoint.path }}</code>
     </div>
 
-    <p v-if="endpoint.summary" class="endpoint-summary">{{ endpoint.summary }}</p>
+    <p v-if="endpoint.summary" class="endpoint-summary">{{ endpointSummary(endpoint) }}</p>
 
     <div v-if="hasParams" class="endpoint-block">
-      <div class="block-label">Parameters</div>
-      <a-table :columns="paramColumns" :data-source="endpoint.params" :pagination="false" size="small" row-key="name" />
+      <div class="block-label">{{ t('pages.apiDocs.parameters') }}</div>
+      <a-table :columns="paramColumns" :data-source="translatedParams" :pagination="false" size="small" row-key="name" />
     </div>
 
     <div v-if="endpoint.body" class="endpoint-block">
-      <div class="block-label">Request body</div>
+      <div class="block-label">{{ t('pages.apiDocs.requestBody') }}</div>
       <a-typography-paragraph :copyable="{ text: endpoint.body }">
         <pre class="code-block">{{ endpoint.body }}</pre>
       </a-typography-paragraph>
     </div>
 
     <div v-if="endpoint.response" class="endpoint-block">
-      <div class="block-label">Response</div>
+      <div class="block-label">{{ t('pages.apiDocs.response') }}</div>
       <a-typography-paragraph :copyable="{ text: endpoint.response }">
         <pre class="code-block">{{ endpoint.response }}</pre>
       </a-typography-paragraph>

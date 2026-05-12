@@ -1,17 +1,33 @@
 <script setup>
+import { useI18n } from 'vue-i18n';
 import EndpointRow from './EndpointRow.vue';
 
-defineProps({
+const { t } = useI18n();
+
+const props = defineProps({
   section: { type: Object, required: true },
 });
+
+function sectionTitle(section) {
+  const key = `pages.apiDocs.sections.${section.id}.title`;
+  const translated = t(key);
+  return translated !== key ? translated : section.title;
+}
+
+function sectionDesc(section) {
+  if (!section.description) return '';
+  const key = `pages.apiDocs.sections.${section.id}.description`;
+  const translated = t(key);
+  return translated !== key ? translated : section.description;
+}
 </script>
 
 <template>
   <section :id="section.id" class="api-section">
-    <h2 class="section-title">{{ section.title }}</h2>
-    <p v-if="section.description" class="section-description">{{ section.description }}</p>
+    <h2 class="section-title">{{ sectionTitle(section) }}</h2>
+    <p v-if="section.description" class="section-description">{{ sectionDesc(section) }}</p>
     <div class="endpoints">
-      <EndpointRow v-for="(endpoint, idx) in section.endpoints" :key="idx" :endpoint="endpoint" />
+      <EndpointRow v-for="(endpoint, idx) in section.endpoints" :key="idx" :endpoint="endpoint" :section-id="section.id" :endpoint-idx="idx" />
     </div>
   </section>
 </template>
