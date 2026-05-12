@@ -8,6 +8,8 @@ import {
   MessageOutlined,
   CloudServerOutlined,
   CodeOutlined,
+  UserOutlined,
+  FileTextOutlined,
 } from '@ant-design/icons-vue';
 
 import { HttpUtil, PromiseUtil } from '@/utils';
@@ -20,6 +22,8 @@ import SecurityTab from './SecurityTab.vue';
 import TelegramTab from './TelegramTab.vue';
 import SubscriptionGeneralTab from './SubscriptionGeneralTab.vue';
 import SubscriptionFormatsTab from './SubscriptionFormatsTab.vue';
+import UsersTab from './UsersTab.vue';
+import AuditLogTab from './AuditLogTab.vue';
 
 const { t } = useI18n();
 
@@ -234,6 +238,20 @@ const alertVisible = ref(true);
                         <span>{{ t('pages.settings.subSettings') }} (Formats)</span>
                       </template>
                       <SubscriptionFormatsTab :all-setting="allSetting" />
+                    </a-tab-pane>
+                    <a-tab-pane key="6" class="tab-pane">
+                      <template #tab>
+                        <UserOutlined />
+                        <span>Users</span>
+                      </template>
+                      <UsersTab />
+                    </a-tab-pane>
+                    <a-tab-pane key="7" class="tab-pane">
+                      <template #tab>
+                        <FileTextOutlined />
+                        <span>Audit Log</span>
+                      </template>
+                      <AuditLogTab />
                     </a-tab-pane>
                   </a-tabs>
                 </a-col>

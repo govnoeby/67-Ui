@@ -1,9 +1,9 @@
 {
-  "name": "3x-ui-frontend",
+  "name": "67-Ui-frontend",
   "private": true,
   "version": "0.0.2",
   "type": "module",
-  "description": "3x-ui panel frontend (Vue 3 + Ant Design Vue 4 + Vite 8).",
+  "description": "67-Ui panel frontend (Vue 3 + Ant Design Vue 4 + Vite 8).",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

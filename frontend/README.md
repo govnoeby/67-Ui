@@ -1,4 +1,4 @@
-# 3x-ui frontend
+# 67-Ui frontend
 
 Vue 3 + Ant Design Vue 4 + Vite. Multi-page app — one HTML entry per
 panel route — built into `../web/dist/` and embedded into the Go binary

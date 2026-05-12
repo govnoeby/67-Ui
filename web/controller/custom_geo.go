@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/entity"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/entity"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 
 	"github.com/gin-gonic/gin"
 )

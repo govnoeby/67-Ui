@@ -69,7 +69,7 @@ function close() {
 
 function download() {
   if (!Array.isArray(logs.value) || logs.value.length === 0) {
-    FileManager.downloadTextFile('', 'x-ui.log');
+    FileManager.downloadTextFile('', '67-ui.log');
     return;
   }
   const lines = logs.value.map((l) => {
@@ -83,7 +83,7 @@ function download() {
       return JSON.stringify(l);
     }
   }).join('\n');
-  FileManager.downloadTextFile(lines, 'x-ui.log');
+  FileManager.downloadTextFile(lines, '67-ui.log');
 }
 
 watch(() => props.open, (next) => { if (next) refresh(); });

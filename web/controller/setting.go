@@ -2,12 +2,15 @@ package controller
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/util/crypto"
-	"github.com/govnoeby/3x-ui/v3/web/entity"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/session"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/util/crypto"
+	"github.com/govnoeby/67-Ui/v3/web/entity"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,6 +49,18 @@ func (a *SettingController) initRouter(g *gin.RouterGroup) {
 	g.GET("/getDefaultJsonConfig", a.getDefaultXrayConfig)
 	g.GET("/getApiToken", a.getApiToken)
 	g.POST("/regenerateApiToken", a.regenerateApiToken)
+
+	// Audit middleware for settings changes
+	g.Use(middleware.AuditMiddleware())
+
+	// User management API — admin only
+	users := g.Group("/users")
+	users.Use(middleware.RequireRole(model.RoleAdmin))
+	users.GET("", a.getUsers)
+	users.GET("/:id", a.getUser)
+	users.POST("", a.createUser)
+	users.PUT("/:id", a.updateUserById)
+	users.DELETE("/:id", a.deleteUser)
 }
 
 // @Summary      Get all settings
@@ -125,7 +140,7 @@ func (a *SettingController) updateUser(c *gin.Context) {
 		jsonMsg(c, I18nWeb(c, "pages.settings.toasts.modifyUserError"), errors.New(I18nWeb(c, "pages.settings.toasts.userPassMustBeNotEmpty")))
 		return
 	}
-	err = a.userService.UpdateUser(user.Id, form.NewUsername, form.NewPassword)
+	err = a.userService.UpdateUserCredentials(user.Id, form.NewUsername, form.NewPassword)
 	if err == nil {
 		user.Username = form.NewUsername
 		user.Password, _ = crypto.HashPasswordAsBcrypt(form.NewPassword)
@@ -194,4 +209,78 @@ func (a *SettingController) regenerateApiToken(c *gin.Context) {
 		return
 	}
 	jsonObj(c, tok, nil)
+}
+
+type createUserForm struct {
+	Username string     `json:"username" binding:"required"`
+	Password string     `json:"password" binding:"required"`
+	Email    string     `json:"email"`
+	Role     model.Role `json:"role"`
+}
+
+func (a *SettingController) getUsers(c *gin.Context) {
+	users, err := a.userService.GetUsers()
+	jsonObj(c, users, err)
+}
+
+func (a *SettingController) getUser(c *gin.Context) {
+	id, err := parseIntParam(c, "id")
+	if err != nil {
+		jsonMsg(c, "invalid id", err)
+		return
+	}
+	user, err := a.userService.GetUser(id)
+	jsonObj(c, user, err)
+}
+
+func (a *SettingController) createUser(c *gin.Context) {
+	var form createUserForm
+	if err := c.ShouldBindJSON(&form); err != nil {
+		jsonMsg(c, "invalid form", err)
+		return
+	}
+	if form.Role == "" {
+		form.Role = model.RoleOperator
+	}
+	user, err := a.userService.CreateUser(form.Username, form.Password, form.Email, form.Role)
+	jsonObj(c, user, err)
+}
+
+func (a *SettingController) updateUserById(c *gin.Context) {
+	id, err := parseIntParam(c, "id")
+	if err != nil {
+		jsonMsg(c, "invalid id", err)
+		return
+	}
+	var form struct {
+		Username string     `json:"username"`
+		Password string     `json:"password"`
+		Email    string     `json:"email"`
+		Role     model.Role `json:"role"`
+		IsActive *bool      `json:"isActive"`
+	}
+	if err := c.ShouldBindJSON(&form); err != nil {
+		jsonMsg(c, "invalid form", err)
+		return
+	}
+	isActive := true
+	if form.IsActive != nil {
+		isActive = *form.IsActive
+	}
+	err = a.userService.UpdateUser(id, form.Username, form.Password, form.Email, form.Role, isActive)
+	jsonMsg(c, "User updated", err)
+}
+
+func (a *SettingController) deleteUser(c *gin.Context) {
+	id, err := parseIntParam(c, "id")
+	if err != nil {
+		jsonMsg(c, "invalid id", err)
+		return
+	}
+	err = a.userService.DeleteUser(id)
+	jsonMsg(c, "User deleted", err)
+}
+
+func parseIntParam(c *gin.Context, name string) (int, error) {
+	return strconv.Atoi(c.Param(name))
 }

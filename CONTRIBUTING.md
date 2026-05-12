@@ -1,16 +1,16 @@
-# Contributing to 3X-UI
+# Contributing to 67-Ui
 
 ## Local Development Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/govnoeby/3x-ui.git
-   cd 3x-ui
+   git clone https://github.com/govnoeby/67-Ui.git
+   cd 67-Ui
    ```
 
-2. Create a directory named `x-ui` in the project root:
-   ```bash
-   mkdir x-ui
+ 2. Create a directory named `67-ui` in the project root:
+    ```bash
+    mkdir 67-ui
    ```
 
 3. Copy environment config:
@@ -66,4 +66,4 @@
 
 ## Questions?
 
-Open an issue or check the [Wiki](https://github.com/govnoeby/3x-ui/wiki).
+Open an issue or check the [Wiki](https://github.com/govnoeby/67-Ui/wiki).

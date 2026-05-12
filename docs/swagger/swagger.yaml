@@ -431,14 +431,14 @@ host: localhost:2053
 info:
   contact:
     name: govnoeby
-    url: https://github.com/govnoeby/3x-ui
+    url: https://github.com/govnoeby/67-Ui
   description: Advanced web panel for managing Xray-core servers. Supports VMESS,
     VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.
   license:
     name: GNU GPL v3
     url: https://www.gnu.org/licenses/gpl-3.0.html
-  termsOfService: https://github.com/govnoeby/3x-ui
-  title: 3X-UI Panel API
+  termsOfService: https://github.com/govnoeby/67-Ui
+  title: 67-Ui Panel API
   version: 3.0.1
 paths:
   /:
@@ -1679,7 +1679,7 @@ paths:
       - Server
   /panel/api/server/getPanelUpdateInfo:
     get:
-      description: Checks whether a newer 3x-ui release is available on GitHub.
+      description: Checks whether a newer 67-Ui release is available on GitHub.
       produces:
       - application/json
       responses:

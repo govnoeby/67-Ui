@@ -133,7 +133,7 @@ function cycleTheme() {
 
           <div v-else class="login-card">
             <div class="brand">
-              <span class="brand-name">3X-UI</span>
+              <span class="brand-name">67-Ui</span>
               <span class="brand-accent" aria-hidden="true"></span>
             </div>
             <h2 class="welcome">

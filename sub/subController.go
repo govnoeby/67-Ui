@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 
 	"github.com/gin-gonic/gin"
 )

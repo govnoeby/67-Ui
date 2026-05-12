@@ -2,7 +2,7 @@
 
 # Start fail2ban with the 3x-ipl jail
 if [ "$XUI_ENABLE_FAIL2BAN" = "true" ]; then
-    LOG_FOLDER="${XUI_LOG_FOLDER:-/var/log/x-ui}"
+    LOG_FOLDER="${XUI_LOG_FOLDER:-/var/log/67-ui}"
     mkdir -p "$LOG_FOLDER"
     touch "$LOG_FOLDER/3xipl.log" "$LOG_FOLDER/3xipl-banned.log"
 
@@ -57,5 +57,5 @@ EOF
     fail2ban-client -x start
 fi
 
-# Run x-ui
-exec /app/x-ui
+# Run 67-ui
+exec /app/67-ui

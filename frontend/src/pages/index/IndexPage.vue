@@ -154,7 +154,7 @@ async function openConfig() {
               </a-col>
 
               <a-col :xs="24" :lg="12">
-                <a-card title="3X-UI" hoverable>
+                <a-card title="67-Ui" hoverable>
                   <template v-if="panelUpdateInfo.updateAvailable" #extra>
                     <a-tooltip :title="`${t('pages.index.updatePanel')}: ${panelUpdateInfo.latestVersion}`">
                       <a-tag color="orange" class="update-tag" @click="panelUpdateOpen = true">
@@ -165,13 +165,13 @@ async function openConfig() {
                     </a-tooltip>
                   </template>
                   <div class="link-tags">
-                    <a href="https://github.com/govnoeby/3x-ui/releases" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/govnoeby/67-Ui/releases" target="_blank" rel="noopener noreferrer">
                       <a-tag color="green">v{{ displayVersion }}</a-tag>
                     </a>
                     <a href="https://t.me/XrayUI" target="_blank" rel="noopener noreferrer">
                       <a-tag color="green">@XrayUI</a-tag>
                     </a>
-                    <a href="https://github.com/govnoeby/3x-ui/wiki" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/govnoeby/67-Ui/wiki" target="_blank" rel="noopener noreferrer">
                       <a-tag color="purple">{{ t('pages.index.documentation') }}</a-tag>
                     </a>
                   </div>

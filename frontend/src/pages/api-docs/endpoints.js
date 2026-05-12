@@ -290,7 +290,7 @@ export const sections = [
       {
         method: 'GET',
         path: '/panel/api/server/getPanelUpdateInfo',
-        summary: 'Check whether a newer 3x-ui release is available on GitHub.',
+        summary: 'Check whether a newer 67-Ui release is available on GitHub.',
       },
       {
         method: 'GET',
@@ -398,7 +398,7 @@ export const sections = [
     id: 'nodes',
     title: 'Nodes API',
     description:
-      'Manage remote 3x-ui panels acting as nodes for a central panel. All endpoints under /panel/api/nodes.',
+      'Manage remote 67-Ui panels acting as nodes for a central panel. All endpoints under /panel/api/nodes.',
     endpoints: [
       {
         method: 'GET',

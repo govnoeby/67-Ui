@@ -5,10 +5,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/middleware"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/session"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )

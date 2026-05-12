@@ -1,7 +1,7 @@
-# 3X-UI Development Guide
+# 67-Ui Development Guide
 
 ## Project Overview
-3X-UI is a web-based control panel for managing Xray-core servers. It's a Go application using Gin web framework with embedded static assets and SQLite database. The panel manages VPN/proxy inbounds, monitors traffic, and provides Telegram bot integration.
+67-Ui is a web-based control panel for managing Xray-core servers. It's a Go application using Gin web framework with embedded static assets and SQLite database. The panel manages VPN/proxy inbounds, monitors traffic, and provides Telegram bot integration.
 
 ## Architecture
 

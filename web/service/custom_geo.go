@@ -14,10 +14,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/database"
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/database"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
 )
 
 const (

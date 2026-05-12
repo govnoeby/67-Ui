@@ -1,4 +1,4 @@
-name: Release 3X-UI
+name: Release 67-Ui
 
 on:
   workflow_dispatch:
@@ -62,7 +62,7 @@ jobs:
           npm run build
         working-directory: frontend
 
-      - name: Build 3X-UI
+      - name: Build 67-Ui
         run: |
           export CGO_ENABLED=1
           export GOOS=linux
@@ -214,7 +214,7 @@ jobs:
             mingw-w64-x86_64-sqlite3
             mingw-w64-x86_64-pkg-config
 
-      - name: Build 3X-UI for Windows (CGO)
+      - name: Build 67-Ui for Windows (CGO)
         shell: msys2 {0}
         run: |
           export PATH="/c/hostedtoolcache/windows/go/$(ls /c/hostedtoolcache/windows/go | sort -V | tail -n1)/x64/bin:$PATH"

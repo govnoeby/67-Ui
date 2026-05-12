@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/entity"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/entity"
 
 	"github.com/gin-gonic/gin"
 )

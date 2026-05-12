@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	xuilogger "github.com/govnoeby/3x-ui/v3/logger"
+	xuilogger "github.com/govnoeby/67-Ui/v3/logger"
 	"github.com/op/go-logging"
 )
 

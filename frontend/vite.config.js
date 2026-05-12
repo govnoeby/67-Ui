@@ -9,10 +9,10 @@ const BACKEND_TARGET = 'http://localhost:2053';
 
 function resolveDBPath() {
   const envFolder = process.env.XUI_DB_FOLDER;
-  if (envFolder) return path.join(envFolder, 'x-ui.db');
-  const repoDB = path.resolve(__dirname, '..', 'x-ui.db');
+  if (envFolder) return path.join(envFolder, '67-ui.db');
+  const repoDB = path.resolve(__dirname, '..', '67-ui.db');
   if (fs.existsSync(repoDB)) return repoDB;
-  return '/etc/x-ui/x-ui.db';
+  return '/etc/67-ui/67-ui.db';
 }
 
 const BASE_MIGRATED_ROUTES = {
@@ -62,7 +62,7 @@ function refreshBasePath() {
 // already injects webBasePath at runtime in production.
 function injectBasePathPlugin() {
   return {
-    name: 'xui-inject-base-path',
+    name: '67-ui-inject-base-path',
     apply: 'serve',
     transformIndexHtml(html) {
       const basePath = refreshBasePath();

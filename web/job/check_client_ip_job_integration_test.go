@@ -9,13 +9,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/database"
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	xuilogger "github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/database"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	xuilogger "github.com/govnoeby/67-Ui/v3/logger"
 	"github.com/op/go-logging"
 )
 
-// 3x-ui logger must be initialised once before any code path that can
+// 67-Ui logger must be initialised once before any code path that can
 // log a warning. otherwise log.Warningf panics on a nil logger.
 var loggerInitOnce sync.Once
 
@@ -45,7 +45,7 @@ func setupIntegrationDB(t *testing.T) {
 		log.SetFlags(origLogFlags)
 	})
 
-	if err := database.InitDB(filepath.Join(dbDir, "3x-ui.db")); err != nil {
+	if err := database.InitDB(filepath.Join(dbDir, "67-Ui.db")); err != nil {
 		t.Fatalf("database.InitDB failed: %v", err)
 	}
 	// LIFO cleanup order: this runs before t.TempDir's own cleanup.

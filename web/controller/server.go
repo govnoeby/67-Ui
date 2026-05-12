@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/crypto"
-	"github.com/govnoeby/3x-ui/v3/web/entity"
-	"github.com/govnoeby/3x-ui/v3/web/global"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/crypto"
+	"github.com/govnoeby/67-Ui/v3/web/entity"
+	"github.com/govnoeby/67-Ui/v3/web/global"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/websocket"
 
 	"github.com/gin-gonic/gin"
 )
@@ -198,7 +198,7 @@ func (a *ServerController) getXrayVersion(c *gin.Context) {
 }
 
 // @Summary      Check panel updates
-// @Description  Checks whether a newer 3x-ui release is available on GitHub.
+// @Description  Checks whether a newer 67-Ui release is available on GitHub.
 // @Tags         Server
 // @Produce      json
 // @Success      200 {object} entity.Msg
@@ -442,7 +442,7 @@ func (a *ServerController) getDb(c *gin.Context) {
 
 	logger.Infof("getDb: database exported by %s from %s", user.Username, getRemoteIp(c))
 
-	filename := "x-ui.db"
+	filename := "67-ui.db"
 
 	if !isValidFilename(filename) {
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("invalid filename"))

@@ -3,14 +3,14 @@ package controller
 import (
 	"net/http"
 
-	"github.com/govnoeby/3x-ui/v3/web/entity"
-	"github.com/govnoeby/3x-ui/v3/web/middleware"
-	"github.com/govnoeby/3x-ui/v3/web/session"
+	"github.com/govnoeby/67-Ui/v3/web/entity"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )
 
-// XUIController is the main controller for the X-UI panel, managing sub-controllers.
+// XUIController is the main controller for the 67-Ui panel, managing sub-controllers.
 type XUIController struct {
 	BaseController
 

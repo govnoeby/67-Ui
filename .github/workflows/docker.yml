@@ -1,4 +1,4 @@
-name: Release 3X-UI for Docker
+name: Release 67-Ui for Docker
 
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: |
-            ghcr.io/govnoeby/3x-ui
+            ghcr.io/govnoeby/67-Ui
           tags: |
             type=ref,event=branch
             type=ref,event=tag

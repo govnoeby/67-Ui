@@ -13,10 +13,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/database"
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/database"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/xray"
 )
 
 // IPWithTimestamp tracks an IP address with its last seen timestamp
@@ -81,7 +81,7 @@ func (j *CheckClientIpJob) Run() {
 					shouldClearAccessLog = j.processLogFile()
 				} else {
 					if !f2bInstalled {
-						logger.Warning("[LimitIP] Fail2Ban is not installed, Please install Fail2Ban from the x-ui bash menu.")
+						logger.Warning("[LimitIP] Fail2Ban is not installed, Please install Fail2Ban from the 67-ui bash menu.")
 					}
 				}
 			}
@@ -424,7 +424,7 @@ func (j *CheckClientIpJob) updateInboundClientIps(inboundClientIps *model.Inboun
 		defer logIpFile.Close()
 		ipLogger := log.New(logIpFile, "", log.LstdFlags)
 
-		// log format is load-bearing: x-ui.sh create_iplimit_jails builds
+		// log format is load-bearing: 67-ui.sh create_iplimit_jails builds
 		// filter.d/3x-ipl.conf with
 		//   failregex = \[LIMIT_IP\]\s*Email\s*=\s*<F-USER>.+</F-USER>\s*\|\|\s*Disconnecting OLD IP\s*=\s*<ADDR>\s*\|\|\s*Timestamp\s*=\s*\d+
 		// don't change the wording.

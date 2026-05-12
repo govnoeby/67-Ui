@@ -1,4 +1,4 @@
-// Package config provides configuration management utilities for the 3x-ui panel,
+// Package config provides configuration management utilities for the 67-Ui panel,
 // including version information, logging levels, database paths, and environment variable handling.
 package config
 
@@ -30,12 +30,12 @@ const (
 	Error   LogLevel = "error"
 )
 
-// GetVersion returns the version string of the 3x-ui application.
+// GetVersion returns the version string of the 67-Ui application.
 func GetVersion() string {
 	return strings.TrimSpace(version)
 }
 
-// GetName returns the name of the 3x-ui application.
+// GetName returns the name of the 67-Ui application.
 func GetName() string {
 	return strings.TrimSpace(name)
 }
@@ -92,7 +92,27 @@ func GetDBFolderPath() string {
 	if runtime.GOOS == "windows" {
 		return getBaseDir()
 	}
-	return "/etc/x-ui"
+	return "/etc/67-ui"
+}
+
+// GetDBType returns the database driver type (sqlite, postgres, mysql).
+func GetDBType() string {
+	dbType := os.Getenv("XUI_DB_TYPE")
+	if dbType == "" {
+		return "sqlite"
+	}
+	return dbType
+}
+
+// GetDBDSN returns the DSN for the database connection.
+// For SQLite, it returns the file path.
+// For PostgreSQL/MySQL, it returns the value of XUI_DB_DSN env var.
+func GetDBDSN() string {
+	dbType := GetDBType()
+	if dbType != "sqlite" {
+		return os.Getenv("XUI_DB_DSN")
+	}
+	return GetDBPath()
 }
 
 // GetDBPath returns the full path to the database file.
@@ -109,7 +129,7 @@ func GetLogFolder() string {
 	if runtime.GOOS == "windows" {
 		return filepath.Join(".", "log")
 	}
-	return "/var/log/x-ui"
+	return "/var/log/67-ui"
 }
 
 func copyFile(src, dst string) error {
@@ -140,7 +160,7 @@ func init() {
 	if os.Getenv("XUI_DB_FOLDER") != "" {
 		return
 	}
-	oldDBFolder := "/etc/x-ui"
+	oldDBFolder := "/etc/67-ui"
 	oldDBPath := fmt.Sprintf("%s/%s.db", oldDBFolder, GetName())
 	newDBFolder := GetDBFolderPath()
 	newDBPath := fmt.Sprintf("%s/%s.db", newDBFolder, GetName())

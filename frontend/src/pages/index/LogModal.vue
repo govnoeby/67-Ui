@@ -50,7 +50,7 @@ function parseLogLine(line) {
     service = 'XRAY:';
     body = body.slice('XRAY:'.length).trimStart();
   } else if (body) {
-    service = 'X-UI:';
+    service = '67-UI:';
   }
 
   return { date, time, levelText, levelClass, service, body };
@@ -79,7 +79,7 @@ function close() {
 }
 
 function download() {
-  FileManager.downloadTextFile(logs.value.join('\n'), 'x-ui.log');
+  FileManager.downloadTextFile(logs.value.join('\n'), '67-ui.log');
 }
 
 watch(() => props.open, (next) => { if (next) refresh(); });

@@ -9,10 +9,10 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://github.com/govnoeby/3x-ui",
+        "termsOfService": "https://github.com/govnoeby/67-Ui",
         "contact": {
 "name": "govnoeby",
-				"url": "https://github.com/govnoeby/3x-ui"
+				"url": "https://github.com/govnoeby/67-Ui"
         },
         "license": {
             "name": "GNU GPL v3",
@@ -1984,7 +1984,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Checks whether a newer 3x-ui release is available on GitHub.",
+                "description": "Checks whether a newer 67-Ui release is available on GitHub.",
                 "produces": [
                     "application/json"
                 ],
@@ -3587,7 +3587,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:2053",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "3X-UI Panel API",
+	Title:            "67-Ui Panel API",
 	Description:      "Advanced web panel for managing Xray-core servers. Supports VMESS, VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

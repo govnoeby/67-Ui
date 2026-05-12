@@ -47,7 +47,7 @@ async function confirmExport() {
       const url = URL.createObjectURL(resp.data);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'x-ui.db';
+      link.download = '67-ui.db';
       link.click();
       URL.revokeObjectURL(url);
       link.remove();

@@ -6,8 +6,8 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/xray"
 )
 
 type LocalDeps struct {

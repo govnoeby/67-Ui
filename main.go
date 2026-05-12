@@ -1,13 +1,13 @@
-// Package main is the entry point for the 3x-ui web panel application.
+// Package main is the entry point for the 67-Ui web panel application.
 // It initializes the database, web server, and handles command-line operations for managing the panel.
 
-// @title          3X-UI Panel API
+// @title          67-Ui Panel API
 // @version        3.0.1
 // @description    Advanced web panel for managing Xray-core servers. Supports VMESS, VLESS, Trojan, Shadowsocks, Hysteria, WireGuard, and more.
-// @termsOfService https://github.com/govnoeby/3x-ui
+// @termsOfService https://github.com/govnoeby/67-Ui
 
 // @contact.name   govnoeby
-// @contact.url    https://github.com/govnoeby/3x-ui
+// @contact.url    https://github.com/govnoeby/67-Ui
 
 // @license.name  GNU GPL v3
 // @license.url   https://www.gnu.org/licenses/gpl-3.0.html
@@ -30,21 +30,21 @@ import (
 	"syscall"
 	_ "unsafe"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/database"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/sub"
-	"github.com/govnoeby/3x-ui/v3/util/crypto"
-	"github.com/govnoeby/3x-ui/v3/util/sys"
-	"github.com/govnoeby/3x-ui/v3/web"
-	"github.com/govnoeby/3x-ui/v3/web/global"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/database"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/sub"
+	"github.com/govnoeby/67-Ui/v3/util/crypto"
+	"github.com/govnoeby/67-Ui/v3/util/sys"
+	"github.com/govnoeby/67-Ui/v3/web"
+	"github.com/govnoeby/67-Ui/v3/web/global"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 
 	"github.com/joho/godotenv"
 	"github.com/op/go-logging"
 )
 
-// runWebServer initializes and starts the web server for the 3x-ui panel.
+// runWebServer initializes and starts the web server for the 67-Ui panel.
 func runWebServer() {
 	log.Printf("Starting %v %v", config.GetName(), config.GetVersion())
 
@@ -414,7 +414,7 @@ func GetListenIP(getListen bool) {
 	}
 }
 
-// migrateDb performs database migration operations for the 3x-ui panel.
+// migrateDb performs database migration operations for the 67-Ui panel.
 func migrateDb() {
 	inboundService := service.InboundService{}
 
@@ -427,7 +427,7 @@ func migrateDb() {
 	fmt.Println("Migration done!")
 }
 
-// main is the entry point of the 3x-ui application.
+// main is the entry point of the 67-Ui application.
 // It parses command-line arguments to run the web server, migrate database, or update settings.
 func main() {
 	if len(os.Args) < 2 {
@@ -480,7 +480,7 @@ func main() {
 		fmt.Println()
 		fmt.Println("Commands:")
 		fmt.Println("    run            run web panel")
-		fmt.Println("    migrate        migrate form other/old x-ui")
+		fmt.Println("    migrate        migrate form other/old 67-ui")
 		fmt.Println("    setting        set settings")
 	}
 

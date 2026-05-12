@@ -3,7 +3,7 @@ package xray
 import (
 	"bytes"
 
-	"github.com/govnoeby/3x-ui/v3/util/json_util"
+	"github.com/govnoeby/67-Ui/v3/util/json_util"
 )
 
 // Config represents the complete Xray configuration structure.

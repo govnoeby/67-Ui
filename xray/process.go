@@ -14,9 +14,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/common"
 )
 
 // GetBinaryName returns the Xray binary filename for the current OS and architecture.

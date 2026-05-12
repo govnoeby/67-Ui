@@ -3,7 +3,7 @@ package runtime
 import (
 	"context"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/database/model"
 )
 
 type Runtime interface {

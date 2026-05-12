@@ -1,13 +1,13 @@
-// Package controller provides HTTP request handlers and controllers for the 3x-ui web management panel.
+// Package controller provides HTTP request handlers and controllers for the 67-Ui web management panel.
 // It handles routing, authentication, and API endpoints for managing Xray inbounds, settings, and more.
 package controller
 
 import (
 	"net/http"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/locale"
-	"github.com/govnoeby/3x-ui/v3/web/session"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/locale"
+	"github.com/govnoeby/67-Ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )

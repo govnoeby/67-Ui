@@ -5,11 +5,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/runtime"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/runtime"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/websocket"
 )
 
 const (

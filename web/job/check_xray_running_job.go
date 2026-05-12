@@ -1,10 +1,10 @@
-// Package job provides background job implementations for the 3x-ui web panel,
+// Package job provides background job implementations for the 67-Ui web panel,
 // including traffic monitoring, system checks, and periodic maintenance tasks.
 package job
 
 import (
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 )
 
 // CheckXrayRunningJob monitors Xray process health and restarts it if it crashes.

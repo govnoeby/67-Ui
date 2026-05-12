@@ -1,4 +1,4 @@
-// Package sub provides subscription server functionality for the 3x-ui panel,
+// Package sub provides subscription server functionality for the 67-Ui panel,
 // including HTTP/HTTPS servers for serving subscription links and JSON configurations.
 package sub
 
@@ -14,12 +14,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/common"
-	"github.com/govnoeby/3x-ui/v3/web/locale"
-	"github.com/govnoeby/3x-ui/v3/web/middleware"
-	"github.com/govnoeby/3x-ui/v3/web/network"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/common"
+	"github.com/govnoeby/67-Ui/v3/web/locale"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/network"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 
 	"github.com/gin-gonic/gin"
 )

@@ -25,7 +25,7 @@ let totp = null;
 
 function buildTotp() {
   totp = new OTPAuth.TOTP({
-    issuer: '3x-ui',
+    issuer: '67-Ui',
     label: 'Administrator',
     algorithm: 'SHA1',
     digits: 6,

@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/logger"
 )
 
 // PanelService provides business logic for panel management operations.
@@ -43,7 +43,7 @@ func (s *PanelService) RestartPanel(delay time.Duration) error {
 	return nil
 }
 
-// GetUpdateInfo checks GitHub for the latest 3x-ui release.
+// GetUpdateInfo checks GitHub for the latest 67-Ui release.
 func (s *PanelService) GetUpdateInfo() (*PanelUpdateInfo, error) {
 	latest, err := fetchLatestPanelVersion()
 	if err != nil {
@@ -73,10 +73,10 @@ func (s *PanelService) StartUpdate() error {
 	}
 
 	mainFolder, serviceFolder := resolveUpdateFolders()
-	updateScript := fmt.Sprintf("set -o pipefail; %s -fLs https://raw.githubusercontent.com/govnoeby/3x-ui/main/update.sh | %s", shellQuote(curl), shellQuote(bash))
+	updateScript := fmt.Sprintf("set -o pipefail; %s -fLs https://raw.githubusercontent.com/govnoeby/67-Ui/main/update.sh | %s", shellQuote(curl), shellQuote(bash))
 
 	if systemdRun, err := exec.LookPath("systemd-run"); err == nil {
-		unitName := fmt.Sprintf("x-ui-web-update-%d", time.Now().Unix())
+		unitName := fmt.Sprintf("67-ui-web-update-%d", time.Now().Unix())
 		cmd := exec.Command(systemdRun,
 			"--unit", unitName,
 			"--setenv", "XUI_MAIN_FOLDER="+mainFolder,
@@ -115,7 +115,7 @@ func (s *PanelService) StartUpdate() error {
 
 func fetchLatestPanelVersion() (string, error) {
 	client := &http.Client{Timeout: 10 * time.Second}
-	resp, err := client.Get("https://api.github.com/repos/govnoeby/3x-ui/releases/latest")
+	resp, err := client.Get("https://api.github.com/repos/govnoeby/67-Ui/releases/latest")
 	if err != nil {
 		return "", err
 	}
@@ -142,7 +142,7 @@ func resolveUpdateFolders() (string, string) {
 		}
 	}
 	if mainFolder == "" {
-		mainFolder = "/usr/local/x-ui"
+		mainFolder = "/usr/local/67-ui"
 	}
 
 	serviceFolder := os.Getenv("XUI_SERVICE")

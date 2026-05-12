@@ -4,19 +4,20 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/web/middleware"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/session"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/session"
 
 	"github.com/gin-gonic/gin"
 )
 
-// APIController handles the main API routes for the 3x-ui panel, including inbounds and server management.
+// APIController handles the main API routes for the 67-Ui panel, including inbounds and server management.
 type APIController struct {
 	BaseController
 	inboundController *InboundController
 	serverController  *ServerController
 	nodeController    *NodeController
+	auditController   *AuditController
 	settingService    service.SettingService
 	userService       service.UserService
 	Tgbot             service.Tgbot
@@ -69,6 +70,7 @@ func (a *APIController) initRouter(g *gin.RouterGroup, customGeo *service.Custom
 	api := g.Group("/panel/api")
 	api.Use(a.checkAPIAuth)
 	api.Use(middleware.CSRFMiddleware())
+	api.Use(middleware.AuditMiddleware())
 
 	// Inbounds API
 	inbounds := api.Group("/inbounds")
@@ -83,6 +85,7 @@ func (a *APIController) initRouter(g *gin.RouterGroup, customGeo *service.Custom
 	a.nodeController = NewNodeController(nodes)
 
 	NewCustomGeoController(api.Group("/custom-geo"), customGeo)
+	a.auditController = NewAuditController(api)
 
 	// Extra routes
 	api.GET("/backuptotgbot", a.BackuptoTgbot)

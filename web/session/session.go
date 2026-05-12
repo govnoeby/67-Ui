@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -15,7 +15,7 @@ import (
 const (
 	loginUserKey      = "LOGIN_USER"
 	apiAuthUserKey    = "api_auth_user"
-	sessionCookieName = "3x-ui"
+	sessionCookieName = "67-Ui"
 )
 
 func init() {

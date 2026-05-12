@@ -1,14 +1,8 @@
 [Unit]
-Description=x-ui Service
-After=network.target
-Wants=network.target
-
-[Service]
-EnvironmentFile=-/etc/sysconfig/x-ui
-Environment="XRAY_VMESS_AEAD_FORCED=false"
-Type=simple
-WorkingDirectory=/usr/local/x-ui/
-ExecStart=/usr/local/x-ui/x-ui
+Description=67-Ui Service
+EnvironmentFile=-/etc/sysconfig/67-ui
+WorkingDirectory=/usr/local/67-ui/
+ExecStart=/usr/local/67-ui/67-ui
 ExecReload=kill -USR1 $MAINPID
 Restart=on-failure
 RestartSec=5s

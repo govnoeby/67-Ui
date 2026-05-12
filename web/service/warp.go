@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/util/common"
+	"github.com/govnoeby/67-Ui/v3/util/common"
 )
 
 // WarpService provides business logic for Cloudflare WARP integration.
@@ -59,7 +59,7 @@ func (s *WarpService) RegWarp(secretKey string, publicKey string) (string, error
 		"key":   publicKey,
 		"tos":   time.Now().UTC().Format("2006-01-02T15:04:05.000Z"),
 		"type":  "PC",
-		"model": "x-ui",
+		"model": "67-ui",
 		"name":  hostName,
 	})
 	if err != nil {

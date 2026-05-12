@@ -98,7 +98,7 @@ onMounted(() => {
                 </a>
               </div>
               <p class="docs-lead">
-                The 3x-ui panel exposes a REST API under <code>/panel/api/</code>. Authenticate with the panel session
+                The 67-Ui panel exposes a REST API under <code>/panel/api/</code>. Authenticate with the panel session
                 cookie, or with the <code>Authorization: Bearer &lt;token&gt;</code> header below. Every endpoint
                 returns a uniform <code>{ success, msg, obj }</code> envelope unless otherwise noted.
               </p>

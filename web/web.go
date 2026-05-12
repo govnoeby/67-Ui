@@ -1,4 +1,4 @@
-// Package web provides the main web server implementation for the 3x-ui panel,
+// Package web provides the main web server implementation for the 67-Ui panel,
 // including HTTP/HTTPS serving, routing, templates, and background job scheduling.
 package web
 
@@ -15,17 +15,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/common"
-	"github.com/govnoeby/3x-ui/v3/web/controller"
-	"github.com/govnoeby/3x-ui/v3/web/job"
-	"github.com/govnoeby/3x-ui/v3/web/locale"
-	"github.com/govnoeby/3x-ui/v3/web/middleware"
-	"github.com/govnoeby/3x-ui/v3/web/network"
-	"github.com/govnoeby/3x-ui/v3/web/runtime"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/web/websocket"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/common"
+	"github.com/govnoeby/67-Ui/v3/web/controller"
+	"github.com/govnoeby/67-Ui/v3/web/job"
+	"github.com/govnoeby/67-Ui/v3/web/locale"
+	"github.com/govnoeby/67-Ui/v3/web/middleware"
+	"github.com/govnoeby/67-Ui/v3/web/network"
+	"github.com/govnoeby/67-Ui/v3/web/runtime"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/web/websocket"
 
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
@@ -37,7 +37,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/govnoeby/3x-ui/v3/docs/swagger"
+	_ "github.com/govnoeby/67-Ui/v3/docs/swagger"
 )
 
 //go:embed translation/*
@@ -105,7 +105,7 @@ func EmbeddedDist() embed.FS {
 	return distFS
 }
 
-// Server represents the main web server for the 3x-ui panel with controllers, services, and scheduled jobs.
+// Server represents the main web server for the 67-Ui panel with controllers, services, and scheduled jobs.
 type Server struct {
 	httpServer *http.Server
 	listener   net.Listener
@@ -195,7 +195,7 @@ func (s *Server) initRouter() (*gin.Engine, error) {
 		sessionOptions.MaxAge = sessionMaxAge * 60 // minutes -> seconds
 	}
 	store.Options(sessionOptions)
-	engine.Use(sessions.Sessions("3x-ui", store))
+	engine.Use(sessions.Sessions("67-Ui", store))
 	engine.Use(func(c *gin.Context) {
 		c.Set("base_path", basePath)
 	})

@@ -7,12 +7,12 @@ import (
 	"maps"
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/json_util"
-	"github.com/govnoeby/3x-ui/v3/util/random"
-	"github.com/govnoeby/3x-ui/v3/web/service"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/json_util"
+	"github.com/govnoeby/67-Ui/v3/util/random"
+	"github.com/govnoeby/67-Ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/xray"
 )
 
 //go:embed default.json

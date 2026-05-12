@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/logger"
 )
 
 // NewLogWriter returns a new LogWriter for processing Xray log output.

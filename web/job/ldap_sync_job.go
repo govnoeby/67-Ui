@@ -5,10 +5,10 @@ import (
 
 	"strings"
 
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	ldaputil "github.com/govnoeby/3x-ui/v3/util/ldap"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	ldaputil "github.com/govnoeby/67-Ui/v3/util/ldap"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 
 	"strconv"
 

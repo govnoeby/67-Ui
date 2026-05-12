@@ -6,7 +6,7 @@ blue='\033[0;34m'
 yellow='\033[0;33m'
 plain='\033[0m'
 
-xui_folder="${XUI_MAIN_FOLDER:=/usr/local/x-ui}"
+xui_folder="${XUI_MAIN_FOLDER:=/usr/local/67-ui}"
 xui_service="${XUI_SERVICE:=/etc/systemd/system}"
 
 # Don't edit this config
@@ -179,7 +179,7 @@ setup_ssl_certificate() {
 
     if [ $? -ne 0 ]; then
         echo -e "${yellow}Failed to issue certificate for ${domain}${plain}"
-        echo -e "${yellow}Please ensure port 80 is open and try again later with: x-ui${plain}"
+        echo -e "${yellow}Please ensure port 80 is open and try again later with: 67-ui${plain}"
         rm -rf ~/.acme.sh/${domain} 2> /dev/null
         rm -rf "$certPath" 2> /dev/null
         return 1
@@ -189,7 +189,7 @@ setup_ssl_certificate() {
     ~/.acme.sh/acme.sh --installcert -d ${domain} \
         --key-file /root/cert/${domain}/privkey.pem \
         --fullchain-file /root/cert/${domain}/fullchain.pem \
-        --reloadcmd "systemctl restart x-ui" > /dev/null 2>&1
+        --reloadcmd "systemctl restart 67-ui" > /dev/null 2>&1
 
     if [ $? -ne 0 ]; then
         echo -e "${yellow}Failed to install certificate${plain}"
@@ -206,7 +206,7 @@ setup_ssl_certificate() {
     local webKeyFile="/root/cert/${domain}/privkey.pem"
 
     if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-        ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile" > /dev/null 2>&1
+        ${xui_folder}/67-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile" > /dev/null 2>&1
         echo -e "${green}SSL certificate installed and configured successfully!${plain}"
         return 0
     else
@@ -257,7 +257,7 @@ setup_ip_certificate() {
     fi
 
     # Set reload command for auto-renewal (add || true so it doesn't fail if service stopped)
-    local reloadCmd="systemctl restart x-ui 2>/dev/null || rc-service x-ui restart 2>/dev/null || true"
+    local reloadCmd="systemctl restart 67-ui 2>/dev/null || rc-service 67-ui restart 2>/dev/null || true"
 
     # Choose port for HTTP-01 listener (default 80, prompt override)
     local WebPort=""
@@ -349,7 +349,7 @@ setup_ip_certificate() {
 
     # Configure panel to use the certificate
     echo -e "${green}Setting certificate paths for the panel...${plain}"
-    ${xui_folder}/x-ui cert -webCert "${certDir}/fullchain.pem" -webCertKey "${certDir}/privkey.pem"
+    ${xui_folder}/67-ui cert -webCert "${certDir}/fullchain.pem" -webCertKey "${certDir}/privkey.pem"
     if [ $? -ne 0 ]; then
         echo -e "${yellow}Warning: Could not set certificate paths automatically.${plain}"
         echo -e "${yellow}You may need to set them manually in the panel settings.${plain}"
@@ -367,8 +367,8 @@ setup_ip_certificate() {
 
 # Comprehensive manual SSL certificate issuance via acme.sh
 ssl_cert_issue() {
-    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep 'webBasePath:' | awk -F': ' '{print $2}' | tr -d '[:space:]' | sed 's#^/##')
-    local existing_port=$(${xui_folder}/x-ui setting -show true | grep 'port:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+    local existing_webBasePath=$(${xui_folder}/67-ui setting -show true | grep 'webBasePath:' | awk -F': ' '{print $2}' | tr -d '[:space:]' | sed 's#^/##')
+    local existing_port=$(${xui_folder}/67-ui setting -show true | grep 'port:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
 
     # check for acme.sh first
     if ! command -v ~/.acme.sh/acme.sh &> /dev/null; then
@@ -435,7 +435,7 @@ ssl_cert_issue() {
 
     # Stop panel temporarily
     echo -e "${yellow}Stopping panel temporarily...${plain}"
-    systemctl stop x-ui 2> /dev/null || rc-service x-ui stop 2> /dev/null
+    systemctl stop 67-ui 2> /dev/null || rc-service 67-ui stop 2> /dev/null
 
     if [[ ${cert_exists} -eq 0 ]]; then
         # issue the certificate
@@ -444,7 +444,7 @@ ssl_cert_issue() {
         if [ $? -ne 0 ]; then
             echo -e "${red}Issuing certificate failed, please check logs.${plain}"
             rm -rf ~/.acme.sh/${domain}
-            systemctl start x-ui 2> /dev/null || rc-service x-ui start 2> /dev/null
+            systemctl start 67-ui 2> /dev/null || rc-service 67-ui start 2> /dev/null
             return 1
         else
             echo -e "${green}Issuing certificate succeeded, installing certificates...${plain}"
@@ -454,22 +454,22 @@ ssl_cert_issue() {
     fi
 
     # Setup reload command
-    reloadCmd="systemctl restart x-ui || rc-service x-ui restart"
-    echo -e "${green}Default --reloadcmd for ACME is: ${yellow}systemctl restart x-ui || rc-service x-ui restart${plain}"
+    reloadCmd="systemctl restart 67-ui || rc-service 67-ui restart"
+    echo -e "${green}Default --reloadcmd for ACME is: ${yellow}systemctl restart 67-ui || rc-service 67-ui restart${plain}"
     echo -e "${green}This command will run on every certificate issue and renew.${plain}"
     read -rp "Would you like to modify --reloadcmd for ACME? (y/n): " setReloadcmd
     if [[ "$setReloadcmd" == "y" || "$setReloadcmd" == "Y" ]]; then
-        echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; systemctl restart x-ui"
+        echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; systemctl restart 67-ui"
         echo -e "${green}\t2.${plain} Input your own command"
         echo -e "${green}\t0.${plain} Keep default reloadcmd"
         read -rp "Choose an option: " choice
         case "$choice" in
             1)
-                echo -e "${green}Reloadcmd is: systemctl reload nginx ; systemctl restart x-ui${plain}"
-                reloadCmd="systemctl reload nginx ; systemctl restart x-ui"
+                echo -e "${green}Reloadcmd is: systemctl reload nginx ; systemctl restart 67-ui${plain}"
+                reloadCmd="systemctl reload nginx ; systemctl restart 67-ui"
                 ;;
             2)
-                echo -e "${yellow}It's recommended to put x-ui restart at the end${plain}"
+                echo -e "${yellow}It's recommended to put 67-ui restart at the end${plain}"
                 read -rp "Please enter your custom reloadcmd: " reloadCmd
                 echo -e "${green}Reloadcmd is: ${reloadCmd}${plain}"
                 ;;
@@ -499,7 +499,7 @@ ssl_cert_issue() {
         if [[ ${cert_exists} -eq 0 ]]; then
             rm -rf ~/.acme.sh/${domain}
         fi
-        systemctl start x-ui 2> /dev/null || rc-service x-ui start 2> /dev/null
+        systemctl start 67-ui 2> /dev/null || rc-service 67-ui start 2> /dev/null
         return 1
     fi
 
@@ -518,7 +518,7 @@ ssl_cert_issue() {
     fi
 
     # Restart panel
-    systemctl start x-ui 2> /dev/null || rc-service x-ui start 2> /dev/null
+    systemctl start 67-ui 2> /dev/null || rc-service 67-ui start 2> /dev/null
 
     # Prompt user to set panel paths after successful certificate installation
     read -rp "Would you like to set this certificate for the panel? (y/n): " setPanel
@@ -527,14 +527,14 @@ ssl_cert_issue() {
         local webKeyFile="/root/cert/${domain}/privkey.pem"
 
         if [[ -f "$webCertFile" && -f "$webKeyFile" ]]; then
-            ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+            ${xui_folder}/67-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
             echo -e "${green}Certificate paths set for the panel${plain}"
             echo -e "${green}Certificate File: $webCertFile${plain}"
             echo -e "${green}Private Key File: $webKeyFile${plain}"
             echo ""
             echo -e "${green}Access URL: https://${domain}:${existing_port}/${existing_webBasePath}${plain}"
             echo -e "${yellow}Panel will restart to apply SSL certificate...${plain}"
-            systemctl restart x-ui 2> /dev/null || rc-service x-ui restart 2> /dev/null
+            systemctl restart 67-ui 2> /dev/null || rc-service 67-ui restart 2> /dev/null
         else
             echo -e "${red}Error: Certificate or private key file not found for domain: $domain.${plain}"
         fi
@@ -599,9 +599,9 @@ prompt_and_setup_ssl() {
 
             # Stop panel if running (port 80 needed)
             if [[ $release == "alpine" ]]; then
-                rc-service x-ui stop > /dev/null 2>&1
+                rc-service 67-ui stop > /dev/null 2>&1
             else
-                systemctl stop x-ui > /dev/null 2>&1
+                systemctl stop 67-ui > /dev/null 2>&1
             fi
 
             setup_ip_certificate "${server_ip}" "${ipv6_addr}"
@@ -615,9 +615,9 @@ prompt_and_setup_ssl() {
 
             # Restart panel after SSL is configured (restart applies new cert settings)
             if [[ $release == "alpine" ]]; then
-                rc-service x-ui restart > /dev/null 2>&1
+                rc-service 67-ui restart > /dev/null 2>&1
             else
-                systemctl restart x-ui > /dev/null 2>&1
+                systemctl restart 67-ui > /dev/null 2>&1
             fi
 
             ;;
@@ -666,8 +666,8 @@ prompt_and_setup_ssl() {
                 fi
             done
 
-            # 3.4 Apply Settings via x-ui binary
-            ${xui_folder}/x-ui cert -webCert "$custom_cert" -webCertKey "$custom_key" > /dev/null 2>&1
+            # 3.4 Apply Settings via 67-ui binary
+            ${xui_folder}/67-ui cert -webCert "$custom_cert" -webCertKey "$custom_key" > /dev/null 2>&1
 
             # Set SSL_HOST for composing Panel URL
             if [[ -n "$custom_domain" ]]; then
@@ -679,7 +679,7 @@ prompt_and_setup_ssl() {
             echo -e "${green}✓ Custom certificate paths applied.${plain}"
             echo -e "${yellow}Note: You are responsible for renewing these files externally.${plain}"
 
-            systemctl restart x-ui > /dev/null 2>&1 || rc-service x-ui restart > /dev/null 2>&1
+            systemctl restart 67-ui > /dev/null 2>&1 || rc-service 67-ui restart > /dev/null 2>&1
             ;;
         *)
             echo -e "${red}Invalid option. Skipping SSL setup.${plain}"
@@ -689,14 +689,14 @@ prompt_and_setup_ssl() {
 }
 
 config_after_update() {
-    echo -e "${yellow}x-ui settings:${plain}"
-    ${xui_folder}/x-ui setting -show true
-    ${xui_folder}/x-ui migrate
+    echo -e "${yellow}67-ui settings:${plain}"
+    ${xui_folder}/67-ui setting -show true
+    ${xui_folder}/67-ui migrate
 
     # Properly detect empty cert by checking if cert: line exists and has content after it
-    local existing_cert=$(${xui_folder}/x-ui setting -getCert true 2> /dev/null | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
-    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
-    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}' | sed 's#^/##')
+    local existing_cert=$(${xui_folder}/67-ui setting -getCert true 2> /dev/null | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+    local existing_port=$(${xui_folder}/67-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+    local existing_webBasePath=$(${xui_folder}/67-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}' | sed 's#^/##')
 
     # Get server IP
     local URL_lists=(
@@ -734,7 +734,7 @@ config_after_update() {
     if [[ ${#existing_webBasePath} -lt 4 ]]; then
         echo -e "${yellow}WebBasePath is missing or too short. Generating a new one...${plain}"
         local config_webBasePath=$(gen_random_string 18)
-        ${xui_folder}/x-ui setting -webBasePath "${config_webBasePath}"
+        ${xui_folder}/67-ui setting -webBasePath "${config_webBasePath}"
         existing_webBasePath="${config_webBasePath}"
         echo -e "${green}New WebBasePath: ${config_webBasePath}${plain}"
     fi
@@ -772,83 +772,83 @@ config_after_update() {
     fi
 }
 
-update_x-ui() {
-    cd ${xui_folder%/x-ui}/
+update_67-ui() {
+    cd ${xui_folder%/67-ui}/
 
-    if [ -f "${xui_folder}/x-ui" ]; then
-        current_xui_version=$(${xui_folder}/x-ui -v)
-        echo -e "${green}Current x-ui version: ${current_xui_version}${plain}"
+    if [ -f "${xui_folder}/67-ui" ]; then
+        current_xui_version=$(${xui_folder}/67-ui -v)
+        echo -e "${green}Current 67-ui version: ${current_xui_version}${plain}"
     else
-        _fail "ERROR: Current x-ui version: unknown"
+        _fail "ERROR: Current 67-ui version: unknown"
     fi
 
-    echo -e "${green}Downloading new x-ui version...${plain}"
+    echo -e "${green}Downloading new 67-ui version...${plain}"
 
-    tag_version=$(${curl_bin} -Ls "https://api.github.com/repos/govnoeby/3x-ui/releases/latest" 2> /dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    tag_version=$(${curl_bin} -Ls "https://api.github.com/repos/govnoeby/67-Ui/releases/latest" 2> /dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     if [[ ! -n "$tag_version" ]]; then
         echo -e "${yellow}Trying to fetch version with IPv4...${plain}"
-        tag_version=$(${curl_bin} -4 -Ls "https://api.github.com/repos/govnoeby/3x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        tag_version=$(${curl_bin} -4 -Ls "https://api.github.com/repos/govnoeby/67-Ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$tag_version" ]]; then
-            _fail "ERROR: Failed to fetch x-ui version, it may be due to GitHub API restrictions, please try it later"
+            _fail "ERROR: Failed to fetch 67-ui version, it may be due to GitHub API restrictions, please try it later"
         fi
     fi
-    echo -e "Got x-ui latest version: ${tag_version}, beginning the installation..."
-    ${curl_bin} -fLRo ${xui_folder}-linux-$(arch).tar.gz https://github.com/govnoeby/3x-ui/releases/download/${tag_version}/x-ui-linux-$(arch).tar.gz 2> /dev/null
+    echo -e "Got 67-ui latest version: ${tag_version}, beginning the installation..."
+    ${curl_bin} -fLRo ${xui_folder}-linux-$(arch).tar.gz https://github.com/govnoeby/67-Ui/releases/download/${tag_version}/67-ui-linux-$(arch).tar.gz 2> /dev/null
     if [[ $? -ne 0 ]]; then
         echo -e "${yellow}Trying to fetch version with IPv4...${plain}"
-        ${curl_bin} -4fLRo ${xui_folder}-linux-$(arch).tar.gz https://github.com/govnoeby/3x-ui/releases/download/${tag_version}/x-ui-linux-$(arch).tar.gz 2> /dev/null
+        ${curl_bin} -4fLRo ${xui_folder}-linux-$(arch).tar.gz https://github.com/govnoeby/67-Ui/releases/download/${tag_version}/67-ui-linux-$(arch).tar.gz 2> /dev/null
         if [[ $? -ne 0 ]]; then
-            _fail "ERROR: Failed to download x-ui, please be sure that your server can access GitHub"
+            _fail "ERROR: Failed to download 67-ui, please be sure that your server can access GitHub"
         fi
     fi
 
     if [[ -e ${xui_folder}/ ]]; then
-        echo -e "${green}Stopping x-ui...${plain}"
+        echo -e "${green}Stopping 67-ui...${plain}"
         if [[ $release == "alpine" ]]; then
-            if [ -f "/etc/init.d/x-ui" ]; then
-                rc-service x-ui stop > /dev/null 2>&1
-                rc-update del x-ui > /dev/null 2>&1
+            if [ -f "/etc/init.d/67-ui" ]; then
+                rc-service 67-ui stop > /dev/null 2>&1
+                rc-update del 67-ui > /dev/null 2>&1
                 echo -e "${green}Removing old service unit version...${plain}"
-                rm -f /etc/init.d/x-ui > /dev/null 2>&1
+                rm -f /etc/init.d/67-ui > /dev/null 2>&1
             else
-                rm x-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
-                _fail "ERROR: x-ui service unit not installed."
+                rm 67-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
+                _fail "ERROR: 67-ui service unit not installed."
             fi
         else
-            if [ -f "${xui_service}/x-ui.service" ]; then
-                systemctl stop x-ui > /dev/null 2>&1
-                systemctl disable x-ui > /dev/null 2>&1
+            if [ -f "${xui_service}/67-ui.service" ]; then
+                systemctl stop 67-ui > /dev/null 2>&1
+                systemctl disable 67-ui > /dev/null 2>&1
                 echo -e "${green}Removing old systemd unit version...${plain}"
-                rm ${xui_service}/x-ui.service -f > /dev/null 2>&1
+                rm ${xui_service}/67-ui.service -f > /dev/null 2>&1
                 systemctl daemon-reload > /dev/null 2>&1
             else
-                rm x-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
-                _fail "ERROR: x-ui systemd unit not installed."
+                rm 67-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
+                _fail "ERROR: 67-ui systemd unit not installed."
             fi
         fi
-        echo -e "${green}Removing old x-ui version...${plain}"
+        echo -e "${green}Removing old 67-ui version...${plain}"
         rm ${xui_folder} -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui.service -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui.service.debian -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui.service.arch -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui.service.rhel -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui -f > /dev/null 2>&1
-        rm ${xui_folder}/x-ui.sh -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui.service -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui.service.debian -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui.service.arch -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui.service.rhel -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui -f > /dev/null 2>&1
+        rm ${xui_folder}/67-ui.sh -f > /dev/null 2>&1
         echo -e "${green}Removing old xray version...${plain}"
         rm ${xui_folder}/bin/xray-linux-amd64 -f > /dev/null 2>&1
         echo -e "${green}Removing old README and LICENSE file...${plain}"
         rm ${xui_folder}/bin/README.md -f > /dev/null 2>&1
         rm ${xui_folder}/bin/LICENSE -f > /dev/null 2>&1
     else
-        rm x-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
-        _fail "ERROR: x-ui not installed."
+        rm 67-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
+        _fail "ERROR: 67-ui not installed."
     fi
 
-    echo -e "${green}Installing new x-ui version...${plain}"
-    tar zxvf x-ui-linux-$(arch).tar.gz > /dev/null 2>&1
-    rm x-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
-    cd x-ui > /dev/null 2>&1
-    chmod +x x-ui > /dev/null 2>&1
+    echo -e "${green}Installing new 67-ui version...${plain}"
+    tar zxvf 67-ui-linux-$(arch).tar.gz > /dev/null 2>&1
+    rm 67-ui-linux-$(arch).tar.gz -f > /dev/null 2>&1
+    cd 67-ui > /dev/null 2>&1
+    chmod +x 67-ui > /dev/null 2>&1
 
     # Check the system's architecture and rename the file accordingly
     if [[ $(arch) == "armv5" || $(arch) == "armv6" || $(arch) == "armv7" ]]; then
@@ -856,21 +856,21 @@ update_x-ui() {
         chmod +x bin/xray-linux-arm > /dev/null 2>&1
     fi
 
-    chmod +x x-ui bin/xray-linux-$(arch) > /dev/null 2>&1
+    chmod +x 67-ui bin/xray-linux-$(arch) > /dev/null 2>&1
 
-    echo -e "${green}Downloading and installing x-ui.sh script...${plain}"
-    ${curl_bin} -fLRo /usr/bin/x-ui https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.sh > /dev/null 2>&1
+    echo -e "${green}Downloading and installing 67-ui.sh script...${plain}"
+    ${curl_bin} -fLRo /usr/bin/67-ui https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.sh > /dev/null 2>&1
     if [[ $? -ne 0 ]]; then
-        echo -e "${yellow}Trying to fetch x-ui with IPv4...${plain}"
-        ${curl_bin} -4fLRo /usr/bin/x-ui https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.sh > /dev/null 2>&1
+        echo -e "${yellow}Trying to fetch 67-ui with IPv4...${plain}"
+        ${curl_bin} -4fLRo /usr/bin/67-ui https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.sh > /dev/null 2>&1
         if [[ $? -ne 0 ]]; then
-            _fail "ERROR: Failed to download x-ui.sh script, please be sure that your server can access GitHub"
+            _fail "ERROR: Failed to download 67-ui.sh script, please be sure that your server can access GitHub"
         fi
     fi
 
-    chmod +x ${xui_folder}/x-ui.sh > /dev/null 2>&1
-    chmod +x /usr/bin/x-ui > /dev/null 2>&1
-    mkdir -p /var/log/x-ui > /dev/null 2>&1
+    chmod +x ${xui_folder}/67-ui.sh > /dev/null 2>&1
+    chmod +x /usr/bin/67-ui > /dev/null 2>&1
+    mkdir -p /var/log/67-ui > /dev/null 2>&1
 
     echo -e "${green}Changing owner...${plain}"
     chown -R root:root ${xui_folder} > /dev/null 2>&1
@@ -881,51 +881,51 @@ update_x-ui() {
     fi
 
     if [[ $release == "alpine" ]]; then
-        echo -e "${green}Downloading and installing startup unit x-ui.rc...${plain}"
-        ${curl_bin} -fLRo /etc/init.d/x-ui https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.rc > /dev/null 2>&1
+        echo -e "${green}Downloading and installing startup unit 67-ui.rc...${plain}"
+        ${curl_bin} -fLRo /etc/init.d/67-ui https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.rc > /dev/null 2>&1
         if [[ $? -ne 0 ]]; then
-            ${curl_bin} -4fLRo /etc/init.d/x-ui https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.rc > /dev/null 2>&1
+            ${curl_bin} -4fLRo /etc/init.d/67-ui https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.rc > /dev/null 2>&1
             if [[ $? -ne 0 ]]; then
-                _fail "ERROR: Failed to download startup unit x-ui.rc, please be sure that your server can access GitHub"
+                _fail "ERROR: Failed to download startup unit 67-ui.rc, please be sure that your server can access GitHub"
             fi
         fi
-        chmod +x /etc/init.d/x-ui > /dev/null 2>&1
-        chown root:root /etc/init.d/x-ui > /dev/null 2>&1
-        rc-update add x-ui > /dev/null 2>&1
-        rc-service x-ui start > /dev/null 2>&1
+        chmod +x /etc/init.d/67-ui > /dev/null 2>&1
+        chown root:root /etc/init.d/67-ui > /dev/null 2>&1
+        rc-update add 67-ui > /dev/null 2>&1
+        rc-service 67-ui start > /dev/null 2>&1
     else
-        if [ -f "x-ui.service" ]; then
+        if [ -f "67-ui.service" ]; then
             echo -e "${green}Installing systemd unit...${plain}"
-            cp -f x-ui.service ${xui_service}/ > /dev/null 2>&1
+            cp -f 67-ui.service ${xui_service}/ > /dev/null 2>&1
             if [[ $? -ne 0 ]]; then
-                echo -e "${red}Failed to copy x-ui.service${plain}"
+                echo -e "${red}Failed to copy 67-ui.service${plain}"
                 exit 1
             fi
         else
             service_installed=false
             case "${release}" in
                 ubuntu | debian | armbian)
-                    if [ -f "x-ui.service.debian" ]; then
+                    if [ -f "67-ui.service.debian" ]; then
                         echo -e "${green}Installing debian-like systemd unit...${plain}"
-                        cp -f x-ui.service.debian ${xui_service}/x-ui.service > /dev/null 2>&1
+                        cp -f 67-ui.service.debian ${xui_service}/67-ui.service > /dev/null 2>&1
                         if [[ $? -eq 0 ]]; then
                             service_installed=true
                         fi
                     fi
                     ;;
                 arch | manjaro | parch)
-                    if [ -f "x-ui.service.arch" ]; then
+                    if [ -f "67-ui.service.arch" ]; then
                         echo -e "${green}Installing arch-like systemd unit...${plain}"
-                        cp -f x-ui.service.arch ${xui_service}/x-ui.service > /dev/null 2>&1
+                        cp -f 67-ui.service.arch ${xui_service}/67-ui.service > /dev/null 2>&1
                         if [[ $? -eq 0 ]]; then
                             service_installed=true
                         fi
                     fi
                     ;;
                 *)
-                    if [ -f "x-ui.service.rhel" ]; then
+                    if [ -f "67-ui.service.rhel" ]; then
                         echo -e "${green}Installing rhel-like systemd unit...${plain}"
-                        cp -f x-ui.service.rhel ${xui_service}/x-ui.service > /dev/null 2>&1
+                        cp -f 67-ui.service.rhel ${xui_service}/67-ui.service > /dev/null 2>&1
                         if [[ $? -eq 0 ]]; then
                             service_installed=true
                         fi
@@ -938,53 +938,53 @@ update_x-ui() {
                 echo -e "${yellow}Service files not found in tar.gz, downloading from GitHub...${plain}"
                 case "${release}" in
                     ubuntu | debian | armbian)
-                        ${curl_bin} -4fLRo ${xui_service}/x-ui.service https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.service.debian > /dev/null 2>&1
+                        ${curl_bin} -4fLRo ${xui_service}/67-ui.service https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.service.debian > /dev/null 2>&1
                         ;;
                     arch | manjaro | parch)
-                        ${curl_bin} -4fLRo ${xui_service}/x-ui.service https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.service.arch > /dev/null 2>&1
+                        ${curl_bin} -4fLRo ${xui_service}/67-ui.service https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.service.arch > /dev/null 2>&1
                         ;;
                     *)
-                        ${curl_bin} -4fLRo ${xui_service}/x-ui.service https://raw.githubusercontent.com/govnoeby/3x-ui/main/x-ui.service.rhel > /dev/null 2>&1
+                        ${curl_bin} -4fLRo ${xui_service}/67-ui.service https://raw.githubusercontent.com/govnoeby/67-Ui/main/67-ui.service.rhel > /dev/null 2>&1
                         ;;
                 esac
 
                 if [[ $? -ne 0 ]]; then
-                    echo -e "${red}Failed to install x-ui.service from GitHub${plain}"
+                    echo -e "${red}Failed to install 67-ui.service from GitHub${plain}"
                     exit 1
                 fi
             fi
         fi
-        chown root:root ${xui_service}/x-ui.service > /dev/null 2>&1
-        chmod 644 ${xui_service}/x-ui.service > /dev/null 2>&1
+        chown root:root ${xui_service}/67-ui.service > /dev/null 2>&1
+        chmod 644 ${xui_service}/67-ui.service > /dev/null 2>&1
         systemctl daemon-reload > /dev/null 2>&1
-        systemctl enable x-ui > /dev/null 2>&1
-        systemctl start x-ui > /dev/null 2>&1
+        systemctl enable 67-ui > /dev/null 2>&1
+        systemctl start 67-ui > /dev/null 2>&1
     fi
 
     config_after_update
 
-    echo -e "${green}x-ui ${tag_version}${plain} updating finished, it is running now..."
+    echo -e "${green}67-ui ${tag_version}${plain} updating finished, it is running now..."
     echo -e ""
     echo -e "┌───────────────────────────────────────────────────────┐
-│  ${blue}x-ui control menu usages (subcommands):${plain}              │
+│  ${blue}67-ui control menu usages (subcommands):${plain}              │
 │                                                       │
-│  ${blue}x-ui${plain}              - Admin Management Script          │
-│  ${blue}x-ui start${plain}        - Start                            │
-│  ${blue}x-ui stop${plain}         - Stop                             │
-│  ${blue}x-ui restart${plain}      - Restart                          │
-│  ${blue}x-ui status${plain}       - Current Status                   │
-│  ${blue}x-ui settings${plain}     - Current Settings                 │
-│  ${blue}x-ui enable${plain}       - Enable Autostart on OS Startup   │
-│  ${blue}x-ui disable${plain}      - Disable Autostart on OS Startup  │
-│  ${blue}x-ui log${plain}          - Check logs                       │
-│  ${blue}x-ui banlog${plain}       - Check Fail2ban ban logs          │
-│  ${blue}x-ui update${plain}       - Update                           │
-│  ${blue}x-ui legacy${plain}       - Legacy version                   │
-│  ${blue}x-ui install${plain}      - Install                          │
-│  ${blue}x-ui uninstall${plain}    - Uninstall                        │
+│  ${blue}67-ui${plain}              - Admin Management Script          │
+│  ${blue}67-ui start${plain}        - Start                            │
+│  ${blue}67-ui stop${plain}         - Stop                             │
+│  ${blue}67-ui restart${plain}      - Restart                          │
+│  ${blue}67-ui status${plain}       - Current Status                   │
+│  ${blue}67-ui settings${plain}     - Current Settings                 │
+│  ${blue}67-ui enable${plain}       - Enable Autostart on OS Startup   │
+│  ${blue}67-ui disable${plain}      - Disable Autostart on OS Startup  │
+│  ${blue}67-ui log${plain}          - Check logs                       │
+│  ${blue}67-ui banlog${plain}       - Check Fail2ban ban logs          │
+│  ${blue}67-ui update${plain}       - Update                           │
+│  ${blue}67-ui legacy${plain}       - Legacy version                   │
+│  ${blue}67-ui install${plain}      - Install                          │
+│  ${blue}67-ui uninstall${plain}    - Uninstall                        │
 └───────────────────────────────────────────────────────┘"
 }
 
 echo -e "${green}Running...${plain}"
 install_base
-update_x-ui $1
+update_67-ui $1

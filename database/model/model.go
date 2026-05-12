@@ -1,11 +1,12 @@
-// Package model defines the database models and data structures used by the 3x-ui panel.
+// Package model defines the database models and data structures used by the 67-Ui panel.
 package model
 
 import (
 	"fmt"
+	"time"
 
-	"github.com/govnoeby/3x-ui/v3/util/json_util"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/util/json_util"
+	"github.com/govnoeby/67-Ui/v3/xray"
 )
 
 // Protocol represents the protocol type for Xray inbounds.
@@ -36,11 +37,34 @@ func IsHysteria(p Protocol) bool {
 	return p == Hysteria || p == Hysteria2
 }
 
-// User represents a user account in the 3x-ui panel.
+// Role defines the access level for a panel user.
+type Role string
+
+const (
+	RoleAdmin    Role = "admin"
+	RoleOperator Role = "operator"
+	RoleViewer   Role = "viewer"
+)
+
+func (r Role) IsValid() bool {
+	switch r {
+	case RoleAdmin, RoleOperator, RoleViewer:
+		return true
+	default:
+		return false
+	}
+}
+
+// User represents a user account in the 67-Ui panel.
 type User struct {
-	Id       int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Id        int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	Username  string `json:"username" gorm:"uniqueIndex"`
+	Password  string `json:"password"`
+	Role      Role   `json:"role" gorm:"default:admin"`
+	Email     string `json:"email"`
+	IsActive  bool   `json:"isActive" gorm:"default:true"`
+	CreatedAt int64  `json:"createdAt" gorm:"autoCreateTime"`
+	UpdatedAt int64  `json:"updatedAt" gorm:"autoUpdateTime"`
 }
 
 // Inbound represents an Xray inbound configuration with traffic statistics and settings.
@@ -116,14 +140,14 @@ func (i *Inbound) GenXrayInboundConfig() *xray.InboundConfig {
 	}
 }
 
-// Setting stores key-value configuration settings for the 3x-ui panel.
+// Setting stores key-value configuration settings for the 67-Ui panel.
 type Setting struct {
 	Id    int    `json:"id" form:"id" gorm:"primaryKey;autoIncrement"`
 	Key   string `json:"key" form:"key"`
 	Value string `json:"value" form:"value"`
 }
 
-// Node represents a remote 3x-ui panel registered with the central panel.
+// Node represents a remote 67-Ui panel registered with the central panel.
 // The central panel polls each node's existing /panel/api/server/status
 // endpoint over HTTP using the per-node ApiToken to populate the runtime
 // status fields below.
@@ -152,6 +176,20 @@ type Node struct {
 
 	CreatedAt int64 `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt int64 `json:"updatedAt" gorm:"autoUpdateTime"`
+}
+
+// AuditLog records administrative actions for security auditing.
+type AuditLog struct {
+	Id        int       `json:"id" gorm:"primaryKey;autoIncrement"`
+	UserId    int       `json:"userId" gorm:"index"`
+	Username  string    `json:"username"`
+	Action    string    `json:"action" gorm:"index"`
+	Path      string    `json:"path"`
+	Method    string    `json:"method"`
+	IP        string    `json:"ip"`
+	Detail    string    `json:"detail" gorm:"type:text"`
+	Status    int       `json:"status"`
+	CreatedAt time.Time `json:"createdAt" gorm:"autoCreateTime;index"`
 }
 
 type CustomGeoResource struct {

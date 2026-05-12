@@ -1,5 +1,5 @@
 // Package database provides database initialization, migration, and management utilities
-// for the 3x-ui panel using GORM with SQLite.
+// for the 67-Ui panel using GORM with pluggable database backends (SQLite, PostgreSQL, MySQL).
 package database
 
 import (
@@ -12,11 +12,13 @@ import (
 	"slices"
 	"time"
 
-	"github.com/govnoeby/3x-ui/v3/config"
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/util/crypto"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/config"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/util/crypto"
+	"github.com/govnoeby/67-Ui/v3/xray"
 
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -40,9 +42,10 @@ func initModels() error {
 		&model.HistoryOfSeeders{},
 		&model.CustomGeoResource{},
 		&model.Node{},
+		&model.AuditLog{},
 	}
-	for _, model := range models {
-		if err := db.AutoMigrate(model); err != nil {
+	for _, m := range models {
+		if err := db.AutoMigrate(m); err != nil {
 			log.Printf("Error auto migrating model: %v", err)
 			return err
 		}
@@ -68,9 +71,13 @@ func initUser() error {
 		user := &model.User{
 			Username: defaultUsername,
 			Password: hashedPassword,
+			Role:     model.RoleAdmin,
+			IsActive: true,
 		}
 		return db.Create(user).Error
 	}
+	// Migrate existing users: set default role if empty
+	db.Model(&model.User{}).Where("role = '' OR role IS NULL").Update("role", model.RoleAdmin)
 	return nil
 }
 
@@ -130,8 +137,12 @@ func isTableEmpty(tableName string) (bool, error) {
 	return count == 0, err
 }
 
-// InitDB sets up the database connection, migrates models, and runs seeders.
+// InitDB sets up the database connection using the configured driver,
+// migrates models, and runs seeders.
 func InitDB(dbPath string) error {
+	dbType := config.GetDBType()
+	dsn := config.GetDBDSN()
+
 	dir := path.Dir(dbPath)
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
@@ -149,23 +160,31 @@ func InitDB(dbPath string) error {
 	c := &gorm.Config{
 		Logger: gormLogger,
 	}
-	dsn := dbPath + "?_journal_mode=WAL&_busy_timeout=10000&_synchronous=NORMAL&_txlock=immediate"
-	db, err = gorm.Open(sqlite.Open(dsn), c)
+
+	switch dbType {
+	case "postgres":
+		db, err = gorm.Open(postgres.Open(dsn), c)
+	case "mysql":
+		db, err = gorm.Open(mysql.Open(dsn), c)
+	default:
+		sqliteDSN := dsn + "?_journal_mode=WAL&_busy_timeout=10000&_synchronous=NORMAL&_txlock=immediate"
+		db, err = gorm.Open(sqlite.Open(sqliteDSN), c)
+		if err == nil {
+			sqlDB, _ := db.DB()
+			if sqlDB != nil {
+				sqlDB.Exec("PRAGMA journal_mode=WAL")
+				sqlDB.Exec("PRAGMA busy_timeout=10000")
+				sqlDB.Exec("PRAGMA synchronous=NORMAL")
+			}
+		}
+	}
+
 	if err != nil {
 		return err
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		return err
-	}
-	if _, err := sqlDB.Exec("PRAGMA journal_mode=WAL"); err != nil {
-		return err
-	}
-	if _, err := sqlDB.Exec("PRAGMA busy_timeout=10000"); err != nil {
-		return err
-	}
-	if _, err := sqlDB.Exec("PRAGMA synchronous=NORMAL"); err != nil {
 		return err
 	}
 	sqlDB.SetMaxOpenConns(8)
@@ -221,7 +240,6 @@ func IsSQLiteDB(file io.ReaderAt) (bool, error) {
 
 // Checkpoint performs a WAL checkpoint on the SQLite database to ensure data consistency.
 func Checkpoint() error {
-	// Update WAL
 	err := db.Exec("PRAGMA wal_checkpoint;").Error
 	if err != nil {
 		return err
@@ -233,7 +251,7 @@ func Checkpoint() error {
 // and runs a PRAGMA integrity_check to ensure the file is structurally sound.
 // It does not mutate global state or run migrations.
 func ValidateSQLiteDB(dbPath string) error {
-	if _, err := os.Stat(dbPath); err != nil { // file must exist
+	if _, err := os.Stat(dbPath); err != nil {
 		return err
 	}
 	gdb, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{Logger: logger.Discard})

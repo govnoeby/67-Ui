@@ -50,8 +50,8 @@ body:
   - type: input
     id: xui-version
     attributes:
-      label: 3x-ui Version
-      description: Which version of 3x-ui are you using?
+      label: 67-Ui Version
+      description: Which version of 67-Ui are you using?
       placeholder: 2.X.X
     validations:
       required: true

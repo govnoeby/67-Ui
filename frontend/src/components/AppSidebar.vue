@@ -97,7 +97,7 @@ function cycleTheme() {
   <div class="ant-sidebar">
     <a-layout-sider :theme="currentTheme" collapsible :collapsed="collapsed" breakpoint="md" @collapse="onCollapse">
       <div class="sider-brand" :class="{ 'sider-brand-collapsed': collapsed }">
-        <span class="brand-text">{{ collapsed ? '3X' : '3X-UI' }}</span>
+        <span class="brand-text">{{ collapsed ? '67' : '67-Ui' }}</span>
         <button v-if="!collapsed" id="theme-cycle" type="button" class="theme-cycle" :aria-label="t('menu.theme')"
           :title="t('menu.theme')" @click="cycleTheme">
           <svg v-if="!theme.isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -138,7 +138,7 @@ function cycleTheme() {
       :body-style="{ padding: 0, display: 'flex', flexDirection: 'column', height: '100%' }"
       :header-style="{ display: 'none' }" @close="closeDrawer">
       <div class="drawer-header">
-        <span class="drawer-brand">3X-UI</span>
+        <span class="drawer-brand">67-Ui</span>
         <div class="drawer-header-actions">
           <button id="theme-cycle-drawer" type="button" class="theme-cycle" :aria-label="t('menu.theme')"
             :title="t('menu.theme')" @click="cycleTheme">

@@ -1,8 +1,8 @@
 package job
 
 import (
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/web/service"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/web/service"
 )
 
 // Period represents the time period for traffic resets.

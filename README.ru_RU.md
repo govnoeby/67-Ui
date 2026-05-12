@@ -2,29 +2,29 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./media/3x-ui-dark.png">
-    <img alt="3x-ui" src="./media/3x-ui-light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="./media/67-Ui-dark.png">
+    <img alt="67-Ui" src="./media/67-Ui-light.png">
   </picture>
 </p>
 
-[![Release](https://img.shields.io/github/v/release/govnoeby/3x-ui.svg)](https://github.com/govnoeby/3x-ui/releases)
-[![GO Version](https://img.shields.io/github/go-mod/go-version/govnoeby/3x-ui.svg)](#)
+[![Release](https://img.shields.io/github/v/release/govnoeby/67-Ui.svg)](https://github.com/govnoeby/67-Ui/releases)
+[![GO Version](https://img.shields.io/github/go-mod/go-version/govnoeby/67-Ui.svg)](#)
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-**3X-UI** — продвинутая панель управления с открытым исходным кодом на основе веб-интерфейса, разработанная для управления сервером Xray-core. Предоставляет удобный интерфейс для настройки и мониторинга различных VPN и прокси-протоколов.
+**67-Ui** — продвинутая панель управления с открытым исходным кодом на основе веб-интерфейса, разработанная для управления сервером Xray-core. Предоставляет удобный интерфейс для настройки и мониторинга различных VPN и прокси-протоколов.
 
 > [!IMPORTANT]
 > Этот проект предназначен только для личного использования, пожалуйста, не используйте его в незаконных целях и в производственной среде.
 
-Как улучшенная версия оригинального проекта X-UI, 3X-UI обеспечивает повышенную стабильность, более широкую поддержку протоколов и дополнительные функции.
+Как улучшенная версия оригинального проекта 67-Ui, 67-Ui обеспечивает повышенную стабильность, более широкую поддержку протоколов и дополнительные функции.
 
 ## Быстрый старт
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/3x-ui/master/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/67-Ui/master/install.sh)
 ```
 
-Полную документацию смотрите в [вики проекта](https://github.com/govnoeby/3x-ui/wiki).
+Полную документацию смотрите в [вики проекта](https://github.com/govnoeby/67-Ui/wiki).
 
 ## Благодарности
 
@@ -33,4 +33,4 @@ bash <(curl -Ls https://raw.githubusercontent.com/govnoeby/3x-ui/master/install.
 
 ## Звезды с течением времени
 
-[![Stargazers over time](https://starchart.cc/govnoeby/3x-ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/3x-ui)
+[![Stargazers over time](https://starchart.cc/govnoeby/67-Ui.svg?variant=adaptive)](https://starchart.cc/govnoeby/67-Ui)

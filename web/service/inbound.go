@@ -1,4 +1,4 @@
-// Package service provides business logic services for the 3x-ui web panel,
+// Package service provides business logic services for the 67-Ui web panel,
 // including inbound/outbound management, user administration, settings, and Xray integration.
 package service
 
@@ -12,12 +12,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/govnoeby/3x-ui/v3/database"
-	"github.com/govnoeby/3x-ui/v3/database/model"
-	"github.com/govnoeby/3x-ui/v3/logger"
-	"github.com/govnoeby/3x-ui/v3/util/common"
-	"github.com/govnoeby/3x-ui/v3/web/runtime"
-	"github.com/govnoeby/3x-ui/v3/xray"
+	"github.com/govnoeby/67-Ui/v3/database"
+	"github.com/govnoeby/67-Ui/v3/database/model"
+	"github.com/govnoeby/67-Ui/v3/logger"
+	"github.com/govnoeby/67-Ui/v3/util/common"
+	"github.com/govnoeby/67-Ui/v3/web/runtime"
+	"github.com/govnoeby/67-Ui/v3/xray"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
