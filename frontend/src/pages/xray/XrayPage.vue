@@ -10,6 +10,7 @@ import {
   DatabaseOutlined,
   CodeOutlined,
   QuestionCircleOutlined,
+  HeartOutlined,
 } from '@ant-design/icons-vue';
 
 import { theme as themeState, antdThemeConfig } from '@/composables/useTheme.js';
@@ -19,6 +20,7 @@ import BasicsTab from './BasicsTab.vue';
 import RoutingTab from './RoutingTab.vue';
 import OutboundsTab from './OutboundsTab.vue';
 import BalancersTab from './BalancersTab.vue';
+import ObservatoryTab from './ObservatoryTab.vue';
 import DnsTab from './DnsTab.vue';
 import WarpModal from './WarpModal.vue';
 import NordModal from './NordModal.vue';
@@ -295,6 +297,13 @@ function confirmRestart() {
                         <ClusterOutlined /> <span>{{ t('pages.xray.Balancers') }}</span>
                       </template>
                       <BalancersTab :template-settings="templateSettings" :client-reverse-tags="clientReverseTags" />
+                    </a-tab-pane>
+
+                    <a-tab-pane key="tpl-health" class="tab-pane">
+                      <template #tab>
+                        <HeartOutlined /> <span>Health Check</span>
+                      </template>
+                      <ObservatoryTab :template-settings="templateSettings" />
                     </a-tab-pane>
 
                     <a-tab-pane key="tpl-dns" class="tab-pane">

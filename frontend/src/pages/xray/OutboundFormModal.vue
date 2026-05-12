@@ -36,7 +36,7 @@ const props = defineProps({
   existingTags: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits(['update:open', 'confirm']);
+const emit = defineEmits(['update:open', 'confirm', 'confirm-batch']);
 
 const PROTOCOL_OPTIONS = Object.values(Protocols);
 const SECURITY_OPTIONS = Object.values(USERS_SECURITY);
@@ -61,6 +61,9 @@ const isEdit = ref(false);
 const activeKey = ref('1');
 const linkInput = ref('');
 
+const dynamicPorts = ref('');
+const createXhttpBackup = ref(false);
+
 // Advanced JSON editor — kept in sync with the parsed Outbound on tab
 // switch so users can copy/paste a full JSON config when the structured
 // form doesn't reach a field.
@@ -77,6 +80,8 @@ watch(() => props.open, (next) => {
   }
   activeKey.value = '1';
   linkInput.value = '';
+  dynamicPorts.value = '';
+  createXhttpBackup.value = false;
   primeAdvancedJson();
 });
 
@@ -128,6 +133,73 @@ const tagHelp = computed(() => {
   return '';
 });
 
+function parsePorts(input) {
+  if (!input || !input.trim()) return [];
+  return input.split(',')
+    .map(p => parseInt(p.trim()))
+    .filter(p => Number.isInteger(p) && p >= 1 && p <= 65535);
+}
+
+function buildBatchOutbounds(baseJson) {
+  const ports = parsePorts(dynamicPorts.value);
+  const hasMultiPort = ports.length > 1;
+  const hasXhttp = createXhttpBackup.value;
+  if (!hasMultiPort && !hasXhttp) return null;
+
+  const outbounds = [];
+  const effectivePorts = ports.length > 0 ? ports : [baseJson.settings?.port || 443];
+
+  for (const port of effectivePorts) {
+    const primary = JSON.parse(JSON.stringify(baseJson));
+    if (hasMultiPort) {
+      primary.tag = `${baseJson.tag}-p${port}`;
+      if (primary.settings) {
+        primary.settings.port = port;
+        if (primary.settings.vnext) {
+          primary.settings.vnext[0].port = port;
+        }
+        if (primary.settings.servers) {
+          primary.settings.servers[0].port = port;
+        }
+      }
+    }
+    outbounds.push(primary);
+
+    if (hasXhttp) {
+      const backup = JSON.parse(JSON.stringify(baseJson));
+      if (hasMultiPort) {
+        backup.tag = `${baseJson.tag}-p${port}-xhttp`;
+        if (backup.settings) {
+          backup.settings.port = port;
+          if (backup.settings.vnext) {
+            backup.settings.vnext[0].port = port;
+          }
+          if (backup.settings.servers) {
+            backup.settings.servers[0].port = port;
+          }
+        }
+      } else {
+        backup.tag = `${baseJson.tag}-xhttp`;
+      }
+      if (!backup.streamSettings) backup.streamSettings = {};
+      backup.streamSettings.network = 'xhttp';
+      backup.streamSettings.xhttpSettings = {
+        path: '/',
+        host: backup.streamSettings?.xhttpSettings?.host || '',
+        mode: 'auto',
+      };
+      delete backup.streamSettings.tcpSettings;
+      delete backup.streamSettings.kcpSettings;
+      delete backup.streamSettings.wsSettings;
+      delete backup.streamSettings.grpcSettings;
+      delete backup.streamSettings.httpupgradeSettings;
+      delete backup.streamSettings.hysteriaSettings;
+      outbounds.push(backup);
+    }
+  }
+  return outbounds;
+}
+
 // ============== Submit ==============
 function onOk() {
   if (!outbound.value) return;
@@ -141,18 +213,28 @@ function onOk() {
   }
   // If user spent time in the JSON tab, prefer that body — round-trip
   // it through Outbound.fromJson so the wire shape stays consistent.
+  let baseJson;
   if (activeKey.value === '2' && advancedJson.value.trim()) {
     try {
       const parsed = JSON.parse(advancedJson.value);
       const built = Outbound.fromJson(parsed);
-      emit('confirm', built.toJson());
-      return;
+      baseJson = built.toJson();
     } catch (e) {
       message.error(`JSON: ${e.message}`);
       return;
     }
+  } else {
+    baseJson = outbound.value.toJson();
   }
-  emit('confirm', outbound.value.toJson());
+
+  // Check if batch creation (dynamic port / xhttp backup) is requested
+  const batch = buildBatchOutbounds(baseJson);
+  if (batch && batch.length > 0) {
+    emit('confirm-batch', batch);
+    return;
+  }
+
+  emit('confirm', baseJson);
 }
 
 // ============== Link → outbound ==============
@@ -832,6 +914,23 @@ function regenerateWgKeys() {
                 <a-switch v-model:checked="outbound.stream.hysteria.disablePathMTUDiscovery" />
               </a-form-item>
             </template>
+          </template>
+
+          <!-- ============== Dynamic Port ============== -->
+          <template v-if="outbound.hasAddressPort() && !isEdit">
+            <a-divider>Anti-blocking</a-divider>
+            <a-form-item label="Ports (rotation)">
+              <template #help>
+                Comma-separated. Creates one outbound per port + optionally xHTTP backup each. Only for new outbounds.
+              </template>
+              <a-input v-model:value="dynamicPorts" placeholder="443,8443,2053" />
+            </a-form-item>
+            <a-form-item label="xHTTP backup">
+              <template #help>
+                Auto-creates a paired outbound with SplitHTTP (xHTTP) transport for each port, configured as fallback.
+              </template>
+              <a-switch v-model:checked="createXhttpBackup" />
+            </a-form-item>
           </template>
 
           <!-- ============== TLS / Reality ============== -->
