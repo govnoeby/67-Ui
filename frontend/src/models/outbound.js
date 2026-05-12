@@ -187,6 +187,98 @@ Object.freeze(USERS_SECURITY);
 Object.freeze(MODE_OPTION);
 Object.freeze(Address_Port_Strategy);
 Object.freeze(DNSRuleActions);
+Object.freeze(ObservatorySettings);
+Object.freeze(BurstObservatorySettings);
+
+export class ObservatorySettings extends CommonClass {
+    constructor(
+        enabled = false,
+        probeInterval = '10s',
+        probeUrl = 'https://www.gstatic.com/generate_204',
+        subjectSelector = [],
+        enableConcurrency = true,
+        maxQurey = 10,
+    ) {
+        super();
+        this.enabled = enabled;
+        this.probeInterval = probeInterval;
+        this.probeUrl = probeUrl;
+        this.subjectSelector = subjectSelector;
+        this.enableConcurrency = enableConcurrency;
+        this.maxQurey = maxQurey;
+    }
+
+    static fromJson(json = {}) {
+        if (!json || Object.keys(json).length === 0) return new ObservatorySettings();
+        return new ObservatorySettings(
+            true,
+            json.probeInterval,
+            json.probeUrl,
+            json.subjectSelector || [],
+            json.enableConcurrency,
+            json.maxQurey,
+        );
+    }
+
+    toJson() {
+        if (!this.enabled) return undefined;
+        return {
+            probeInterval: this.probeInterval,
+            probeUrl: this.probeUrl,
+            subjectSelector: this.subjectSelector,
+            enableConcurrency: this.enableConcurrency,
+            maxQurey: this.maxQurey,
+        };
+    }
+}
+
+export class BurstObservatorySettings extends CommonClass {
+    constructor(
+        enabled = false,
+        subjectSelector = [],
+        pingInterval = '10s',
+        pingParallel = true,
+        pingDestination = 'https://www.gstatic.com/generate_204',
+        pingConnectivity = '',
+    ) {
+        super();
+        this.enabled = enabled;
+        this.subjectSelector = subjectSelector;
+        this.pingInterval = pingInterval;
+        this.pingParallel = pingParallel;
+        this.pingDestination = pingDestination;
+        this.pingConnectivity = pingConnectivity;
+    }
+
+    static fromJson(json = {}) {
+        if (!json || Object.keys(json).length === 0) return new BurstObservatorySettings();
+        const pingConfig = json.pingConfig || {};
+        return new BurstObservatorySettings(
+            true,
+            json.subjectSelector || [],
+            pingConfig.interval || '10s',
+            pingConfig.parallel !== false,
+            pingConfig.destination || 'https://www.gstatic.com/generate_204',
+            pingConfig.connectivity || '',
+        );
+    }
+
+    toJson() {
+        if (!this.enabled) return undefined;
+        const result = {
+            subjectSelector: this.subjectSelector,
+            pingConfig: {
+                interval: this.pingInterval,
+                parallel: this.pingParallel,
+                destination: this.pingDestination,
+            },
+        };
+        if (this.pingConnectivity) {
+            result.pingConfig.connectivity = this.pingConnectivity;
+        }
+        return result;
+    }
+}
 
 export class CommonClass {
 

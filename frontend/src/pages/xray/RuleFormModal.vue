@@ -33,6 +33,7 @@ const form = reactive({
   protocol: [],
   attrs: [], // [[key, value], ...]
   outboundTag: '',
+  outboundFallbackTag: '',
   balancerTag: '',
 });
 
@@ -51,6 +52,7 @@ function reset() {
   form.protocol = [];
   form.attrs = [];
   form.outboundTag = '';
+  form.outboundFallbackTag = '';
   form.balancerTag = '';
 }
 
@@ -72,6 +74,7 @@ watch(() => props.open, (next) => {
     // Attrs in the wire shape are an object — flatten to [[k,v]] pairs.
     form.attrs = r.attrs ? Object.entries(r.attrs) : [];
     form.outboundTag = r.outboundTag || '';
+    form.outboundFallbackTag = r.outboundFallbackTag || r.outboundFallback?.outboundTag || '';
     form.balancerTag = r.balancerTag || '';
   } else {
     isEdit.value = false;
@@ -101,6 +104,7 @@ function buildResult() {
     protocol: form.protocol,
     attrs: Object.fromEntries(form.attrs.filter(([k]) => k)),
     outboundTag: form.outboundTag === '' ? undefined : form.outboundTag,
+    outboundFallbackTag: form.outboundFallbackTag === '' ? undefined : form.outboundFallbackTag,
     balancerTag: form.balancerTag === '' ? undefined : form.balancerTag,
   };
   // Strip empty arrays / objects / strings so the final wire JSON
@@ -247,6 +251,19 @@ const PROTOCOLS = ['http', 'tls', 'bittorrent', 'quic'];
 
       <a-form-item label="Outbound tag">
         <a-select v-model:value="form.outboundTag">
+          <a-select-option v-for="tag in outboundTags" :key="tag || '__empty'" :value="tag">{{ tag || '(none)'
+            }}</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item>
+        <template #label>
+          <a-tooltip title="When Observatory detects the primary outbound is unhealthy, traffic automatically switches to this fallback outbound">
+            Fallback outbound tag
+            <QuestionCircleOutlined />
+          </a-tooltip>
+        </template>
+        <a-select v-model:value="form.outboundFallbackTag">
           <a-select-option v-for="tag in outboundTags" :key="tag || '__empty'" :value="tag">{{ tag || '(none)'
             }}</a-select-option>
         </a-select>

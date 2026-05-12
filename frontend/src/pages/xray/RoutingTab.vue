@@ -340,6 +340,12 @@ const columns = computed(() => (props.isMobile ? mobileColumns.value : desktopCo
               <ExportOutlined class="target-icon" />
               <a-tag color="green">{{ record.outboundTag }}</a-tag>
             </div>
+            <div v-if="record.outboundFallbackTag" class="target-row">
+              <a-tooltip title="Fallback when primary is unhealthy (requires Observatory)">
+                <span class="fallback-label">FB</span>
+              </a-tooltip>
+              <a-tag color="orange">{{ record.outboundFallbackTag }}</a-tag>
+            </div>
             <div v-if="record.balancerTag" class="target-row">
               <ClusterOutlined class="target-icon" />
               <a-tag color="purple">{{ record.balancerTag }}</a-tag>
@@ -428,5 +434,14 @@ const columns = computed(() => (props.isMobile ? mobileColumns.value : desktopCo
 
 .danger {
   color: #ff4d4f;
+}
+
+.fallback-label {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: rgba(255, 165, 0, 0.2);
+  color: #fa8c16;
 }
 </style>

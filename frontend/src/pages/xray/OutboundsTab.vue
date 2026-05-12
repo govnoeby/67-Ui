@@ -35,7 +35,7 @@ const props = defineProps({
   isMobile: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['reset-traffic', 'test', 'test-all', 'show-warp', 'show-nord', 'delete']);
+const emit = defineEmits(['reset-traffic', 'test', 'test-all', 'show-warp', 'show-nord', 'delete', 'add-outbound']);
 
 const testMode = ref('tcp');
 
@@ -65,6 +65,14 @@ function onConfirm(outbound) {
     props.templateSettings.outbounds.push(outbound);
   } else {
     props.templateSettings.outbounds[editingIndex.value] = outbound;
+  }
+  modalOpen.value = false;
+}
+
+function onConfirmBatch(outbounds) {
+  if (!Array.isArray(outbounds) || outbounds.length === 0) return;
+  for (const ob of outbounds) {
+    if (ob.tag) props.templateSettings.outbounds.push(ob);
   }
   modalOpen.value = false;
 }
@@ -434,7 +442,7 @@ const rows = computed(() => {
     </a-table>
 
     <OutboundFormModal v-model:open="modalOpen" :outbound="editingOutbound" :existing-tags="existingTags"
-      @confirm="onConfirm" />
+      @confirm="onConfirm" @confirm-batch="onConfirmBatch" />
   </a-space>
 </template>
 
