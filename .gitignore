@@ -21,10 +21,10 @@ node_modules/
 
 # Ignore compiled binaries
 main
-
-# Ignore script and executable files
-/release.sh
-/67-ui
+67-Ui
+67-Ui-fixed
+67-Ui-new
+67-ui-bin
 
 # Ignore OS specific files
 .DS_Store

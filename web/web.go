@@ -33,11 +33,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron/v3"
 
-	// Swagger UI
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	// Swagger UI (temporarily disabled — swaggo v1.16.6 parsing issue)
+	// swaggerFiles "github.com/swaggo/files"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/govnoeby/67-Ui/v3/docs/swagger"
+	// _ "github.com/govnoeby/67-Ui/v3/docs/swagger"
 )
 
 //go:embed translation/*
@@ -236,8 +236,8 @@ func (s *Server) initRouter() (*gin.Engine, error) {
 
 	g := engine.Group(basePath)
 
-	// Swagger UI — serves auto-generated OpenAPI documentation
-	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Swagger UI — serves auto-generated OpenAPI documentation (disabled)
+	// g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	s.index = controller.NewIndexController(g)
 	s.panel = controller.NewXUIController(g)

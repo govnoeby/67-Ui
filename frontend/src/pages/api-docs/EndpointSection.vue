@@ -15,17 +15,17 @@ function sectionTitle(section) {
 }
 
 function sectionDesc(section) {
-  if (!section.description) return '';
-  const key = `pages.apiDocs.sections.${section.id}.description`;
+  if (!section.desc) return '';
+  const key = `pages.apiDocs.sections.${section.id}.desc`;
   const translated = t(key);
-  return translated !== key ? translated : section.description;
+  return translated !== key ? translated : section.desc;
 }
 </script>
 
 <template>
   <section :id="section.id" class="api-section">
     <h2 class="section-title">{{ sectionTitle(section) }}</h2>
-    <p v-if="section.description" class="section-description">{{ sectionDesc(section) }}</p>
+    <p v-if="section.desc" class="section-description">{{ sectionDesc(section) }}</p>
     <div class="endpoints">
       <EndpointRow v-for="(endpoint, idx) in section.endpoints" :key="idx" :endpoint="endpoint" :section-id="section.id" :endpoint-idx="idx" />
     </div>

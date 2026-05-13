@@ -187,8 +187,25 @@ Object.freeze(USERS_SECURITY);
 Object.freeze(MODE_OPTION);
 Object.freeze(Address_Port_Strategy);
 Object.freeze(DNSRuleActions);
-Object.freeze(ObservatorySettings);
-Object.freeze(BurstObservatorySettings);
+
+export class CommonClass {
+
+    static toJsonArray(arr) {
+        return arr.map(obj => obj.toJson());
+    }
+
+    static fromJson() {
+        return new CommonClass();
+    }
+
+    toJson() {
+        return this;
+    }
+
+    toString(format = true) {
+        return format ? JSON.stringify(this.toJson(), null, 2) : JSON.stringify(this.toJson());
+    }
+}
 
 export class ObservatorySettings extends CommonClass {
     constructor(
@@ -280,24 +297,8 @@ export class BurstObservatorySettings extends CommonClass {
     }
 }
 
-export class CommonClass {
-
-    static toJsonArray(arr) {
-        return arr.map(obj => obj.toJson());
-    }
-
-    static fromJson() {
-        return new CommonClass();
-    }
-
-    toJson() {
-        return this;
-    }
-
-    toString(format = true) {
-        return format ? JSON.stringify(this.toJson(), null, 2) : JSON.stringify(this.toJson());
-    }
-}
+Object.freeze(ObservatorySettings);
+Object.freeze(BurstObservatorySettings);
 
 export class ReverseSniffing extends CommonClass {
     constructor(
