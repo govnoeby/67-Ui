@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -168,10 +170,24 @@ func (s *NodeService) AggregateNodeMetric(id int, metric string, bucketSeconds i
 
 func (s *NodeService) Probe(ctx context.Context, n *model.Node) (HeartbeatPatch, error) {
 	patch := HeartbeatPatch{LastHeartbeat: time.Now().Unix()}
-	url := fmt.Sprintf("%s://%s:%d%spanel/api/server/status",
-		n.Scheme, n.Address, n.Port, n.BasePath)
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if n.Scheme != "http" && n.Scheme != "https" {
+		n.Scheme = "https"
+	}
+	if net.ParseIP(n.Address) == nil {
+		if _, err := net.LookupHost(n.Address); err != nil {
+			patch.LastError = "invalid address"
+			return patch, fmt.Errorf("unresolvable node address: %s", n.Address)
+		}
+	}
+
+	u := &url.URL{
+		Scheme: n.Scheme,
+		Host:   fmt.Sprintf("%s:%d", n.Address, n.Port),
+		Path:   n.BasePath + "panel/api/server/status",
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		patch.LastError = err.Error()
 		return patch, err
@@ -254,3 +270,4 @@ func (p HeartbeatPatch) ToUI(ok bool) ProbeResultUI {
 	}
 	return r
 }
+
